@@ -4,8 +4,10 @@
 	result: var(--size);
 }
 :root {
-	color-scheme: light dark;
+	/* TODO: change to 'color-scheme: light dark;' after light mode is implemented */
+	color-scheme: dark;
 }
+
 @layer tokens {
 	:root {
 		--m3c-surface: light-dark(#fdf7fe, #0f0d12);

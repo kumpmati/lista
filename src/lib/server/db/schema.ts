@@ -1,4 +1,4 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { index, integer, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 import { user } from './auth.schema';
 
@@ -40,5 +40,13 @@ export const listItem = pgTable(
 );
 
 export type ListItem = typeof listItem.$inferSelect;
+
+export const listRelations = relations(list, ({ many }) => ({
+	items: many(listItem)
+}));
+
+export const listItemRelations = relations(listItem, ({ one }) => ({
+	list: one(list, { fields: [listItem.listId], references: [list.id] })
+}));
 
 export * from './auth.schema';
