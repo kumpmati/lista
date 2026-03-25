@@ -13,7 +13,7 @@
 
 	const handleCreateList = async () => {
 		const list = await createList({ name: 'Untitled list' });
-		goto(resolve('/(app)/[listId]', { listId: list.id }));
+		goto(resolve('/(app)/list/[listId]', { listId: list.id }));
 	};
 </script>
 
@@ -49,7 +49,9 @@
 		<ul>
 			{#each lists as list (list.id)}
 				<li>
-					<a class="list" href={resolve('/(app)/[listId]', { listId: list.id })}>{list.name}</a>
+					<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
+						{list.name}
+					</a>
 				</li>
 			{:else}
 				<li>No lists yet.</li>
@@ -75,9 +77,5 @@
 		text-decoration: none;
 		color: var(--white);
 		font-weight: bold;
-
-		&:hover {
-			background-color: var(--m3c-primary-container-subtle);
-		}
 	}
 </style>
