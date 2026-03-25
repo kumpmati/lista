@@ -31,14 +31,10 @@ export const listItem = pgTable(
 		text: text('text').notNull(),
 		amount: integer('amount').notNull().default(1),
 		// TODO: image attachments
-		lastUpdatedByUserId: text('last_updated_by_user_id')
-			.notNull()
-			.references(() => user.id),
 		updatedAt: timestamp('updated_at', { withTimezone: true })
-			.notNull()
-			.defaultNow()
 			.default(sql`NULL`)
-			.$onUpdateFn(() => new Date())
+			.$onUpdateFn(() => new Date()),
+		createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow()
 	},
 	(table) => [index('list_item_list_id_index').on(table.listId)]
 );

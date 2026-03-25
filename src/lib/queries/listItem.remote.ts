@@ -20,7 +20,7 @@ export const getListItems = query(getListItemsBodySchema, async ({ listId }) => 
 });
 
 export const createListItem = command(createListItemBodySchema, async (body) => {
-	const user = await mustAuthenticate(); // TODO: check permissions
+	await mustAuthenticate(); // TODO: check permissions
 
 	const [inserted] = await db
 		.insert(listItem)
@@ -29,7 +29,6 @@ export const createListItem = command(createListItemBodySchema, async (body) => 
 			listId: body.listId,
 			amount: body.amount,
 			text: body.text,
-			lastUpdatedByUserId: user.id,
 			status: 'todo'
 		})
 		.returning();

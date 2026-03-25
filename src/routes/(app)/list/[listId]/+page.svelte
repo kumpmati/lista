@@ -20,9 +20,12 @@
 	let { params } = $props();
 
 	const sortCompletedLast = (a: ListItem, b: ListItem) => {
-		if (a.status === 'done') return 1;
-		if (b.status === 'done') return -1;
-		return 0;
+		if (a.status === b.status) {
+			return b.createdAt.getTime() - a.createdAt.getTime();
+		}
+
+		// sort uncompleted to the top of the list
+		return a.status === 'todo' ? -1 : 1;
 	};
 
 	let editing = $state<string | null>(null);

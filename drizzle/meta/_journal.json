@@ -8,6 +8,13 @@
       "when": 1774443770734,
       "tag": "0000_solid_sauron",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1774471447686,
+      "tag": "0001_parallel_stardust",
+      "breakpoints": true
     }
   ]
 }
