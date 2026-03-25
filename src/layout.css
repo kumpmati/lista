@@ -8,3 +8,8 @@
 	--purple-950: #3c0366;
 	--red-300: #ffa2a2;
 }
+
+html,
+body {
+	background-color: var(--m3c-surface-container-lowest);
+}

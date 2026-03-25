@@ -123,6 +123,7 @@
 		gap: 1rem;
 		align-items: center;
 		margin-top: 0.5rem;
+		padding: 0 1rem;
 	}
 
 	ul {

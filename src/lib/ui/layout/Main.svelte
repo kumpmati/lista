@@ -19,7 +19,7 @@
 	@media screen and (min-width: 40rem) {
 		main {
 			width: calc(100% - 2rem);
-			background-color: var(--m3c-surface-container);
+			background-color: var(--m3c-surface);
 			border-radius: 1rem;
 			overflow: clip;
 			margin-top: 2rem;
