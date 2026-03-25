@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { updateListItemStatus } from '$lib/queries/listItem.remote';
 	import type { ListItem } from '$lib/server/db/schema';
 	import { wrap } from '$lib/wrap.svelte';
 	import { Checkbox } from 'm3-svelte';
@@ -11,6 +10,7 @@
 		status: ListItem['status'];
 		amount: number;
 		text: string;
+		onToggle: (to: ListItem['status']) => Promise<void>;
 		onLongPress: () => void;
 	};
 
@@ -26,13 +26,11 @@
 	const handleToggle = wrap(async () => {
 		if (disabled) return;
 
-		const updated = await updateListItemStatus({
-			itemId: props.itemId,
-			status: checked ? 'done' : 'todo'
-		});
+		const newStatus = checked ? 'done' : 'todo';
 
-		// update optimistically until actual result is received
-		checked = updated.status === 'done';
+		checked = newStatus === 'done'; // optimistic update
+
+		await props.onToggle(newStatus);
 	});
 </script>
 
@@ -62,7 +60,7 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
-		padding: 10px 16px;
+		padding: 10px 1.5rem;
 		height: 3rem;
 		line-height: 1;
 		position: relative;

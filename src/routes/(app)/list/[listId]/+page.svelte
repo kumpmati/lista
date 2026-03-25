@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { getListById } from '$lib/queries/list.remote.js';
-	import { createListItem, deleteListItem, updateListItem } from '$lib/queries/listItem.remote.js';
+	import {
+		createListItem,
+		deleteListItem,
+		updateListItem,
+		updateListItemStatus
+	} from '$lib/queries/listItem.remote.js';
 	import type { ListItem } from '$lib/server/db/schema.js';
 	import ListItemRow from '$lib/ui/components/ListItemRow.svelte';
 	import ListItemRowEdit from '$lib/ui/components/ListItemRowEdit.svelte';
@@ -10,12 +15,20 @@
 	import { wrap } from '$lib/wrap.svelte.js';
 	import { ArrowLeft, Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
+	import { flip } from 'svelte/animate';
 
 	let { params } = $props();
+
+	const sortCompletedLast = (a: ListItem, b: ListItem) => {
+		if (a.status === 'done') return 1;
+		if (b.status === 'done') return -1;
+		return 0;
+	};
 
 	let editing = $state<string | null>(null);
 
 	const list = $derived(await getListById(params.listId));
+	const sortedItems = $derived(list.items.toSorted(sortCompletedLast));
 
 	const handleCreateItem = wrap(async () => {
 		await createListItem({ listId: list.id, amount: 1, text: 'Lorem ipsum' }).updates(
@@ -23,17 +36,19 @@
 		);
 	});
 
+	const handleToggleItem = wrap(
+		async (id: string, status: ListItem['status']) => {
+			await updateListItemStatus({ itemId: id, status }).updates(getListById(params.listId));
+		},
+		(id) => id // group pending status by item
+	);
+
 	const handleUpdateItem = wrap(
 		async (id: string, amount: number, text: string) => {
 			await updateListItem({ itemId: id, amount, text }).updates(getListById(params.listId));
 		},
-		// group pending status by item id
-		(id) => id
+		(id) => id // group pending status by item
 	);
-
-	const sortOldestFirst = (a: ListItem, b: ListItem) => {
-		return a.updatedAt.getTime() - b.updatedAt.getTime();
-	};
 </script>
 
 <svelte:head>
@@ -50,8 +65,8 @@
 	</Header>
 
 	<ul>
-		{#each list.items.toSorted(sortOldestFirst) as item (item.id)}
-			<li>
+		{#each sortedItems as item (item.id)}
+			<li animate:flip={{ duration: 150 }}>
 				{#if editing === item.id}
 					<ListItemRowEdit
 						amount={item.amount}
@@ -65,15 +80,14 @@
 					/>
 				{:else}
 					<ListItemRow
-						disabled={handleUpdateItem.pending.has(item.id)}
+						disabled={handleUpdateItem.pending.has(item.id) ||
+							handleToggleItem.pending.has(item.id)}
 						itemId={item.id}
 						status={item.status}
 						text={item.text}
 						amount={item.amount}
-						onLongPress={() => {
-							console.log('edit', item.id);
-							editing = item.id;
-						}}
+						onLongPress={() => (editing = item.id)}
+						onToggle={(status) => handleToggleItem.run(item.id, status)}
 					/>
 				{/if}
 			</li>
@@ -106,5 +120,9 @@
 		gap: 1rem;
 		align-items: center;
 		margin-top: 0.5rem;
+	}
+
+	ul {
+		margin-top: 1rem;
 	}
 </style>

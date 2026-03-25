@@ -3,7 +3,7 @@
 	import AmountPicker from './AmountPicker.svelte';
 	import SubtleTextField from './SubtleTextField.svelte';
 	import { Button } from 'm3-svelte';
-	import { X } from '@lucide/svelte';
+	import { Save } from '@lucide/svelte';
 
 	type Props = {
 		text: string;
@@ -29,7 +29,7 @@
 	role="none"
 	class="backdrop"
 	in:fade={{ duration: 100 }}
-	onclick={() => handleClose('save')}
+	onclick={() => handleClose('cancel')}
 ></div>
 
 <div class="wrapper">
@@ -56,10 +56,10 @@
 			variant="tonal"
 			size="xs"
 			style="margin-left: auto;"
-			onclick={() => handleClose('cancel')}
+			onclick={() => handleClose('save')}
 		>
-			<X />
-			Cancel
+			<Save />
+			Save
 		</Button>
 	</div>
 </div>
@@ -78,15 +78,15 @@
 		flex-direction: column;
 		position: relative;
 		z-index: 101;
-		padding: 10px 1rem;
-		padding-left: 0.5rem;
 		gap: 1rem;
 	}
 
 	.buttons {
 		position: absolute;
-		bottom: -2rem;
+		bottom: 0;
 		right: 1rem;
+		transform: translateY(100%);
+		display: flex;
 	}
 
 	.item {
@@ -94,6 +94,8 @@
 		display: flex;
 		align-items: center;
 		line-height: 1;
+		padding: 10px 1.5rem;
+		padding-left: 0.5rem;
 	}
 
 	form {

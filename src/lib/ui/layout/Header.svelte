@@ -11,6 +11,7 @@
 	div {
 		display: flex;
 		align-items: center;
-		padding: 0.5rem 0;
+		padding: 0.5rem;
+		background-color: var(--m3c-surface-container);
 	}
 </style>
