@@ -21,7 +21,7 @@
 
 	const sortCompletedLast = (a: ListItem, b: ListItem) => {
 		if (a.status === b.status) {
-			return b.createdAt.getTime() - a.createdAt.getTime();
+			return a.createdAt.getTime() - b.createdAt.getTime();
 		}
 
 		// sort uncompleted to the top of the list
