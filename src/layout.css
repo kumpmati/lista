@@ -1,0 +1,10 @@
+:root {
+	--m3-font: 'Atkinson Hyperlegible', system-ui;
+	font-family: var(--m3-font);
+
+	--white: #fff;
+	--black: #000;
+	--purple-300: #dab2ff;
+	--purple-950: #3c0366;
+	--red-300: #ffa2a2;
+}
