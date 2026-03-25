@@ -23,6 +23,7 @@
 			border-radius: 1rem;
 			overflow: clip;
 			margin-top: 2rem;
+			padding: 1rem;
 		}
 	}
 </style>
