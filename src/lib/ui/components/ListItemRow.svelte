@@ -20,7 +20,7 @@
 
 	const press = usePress(
 		() => !disabled && props.onLongPress(),
-		() => ({ timeframe: 500, triggerBeforeFinished: true })
+		() => ({ timeframe: 300, triggerBeforeFinished: true })
 	);
 
 	const handleToggle = wrap(async () => {
