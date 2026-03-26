@@ -68,7 +68,7 @@
 	.backdrop {
 		background-color: black;
 		opacity: 0.9;
-		position: absolute;
+		position: fixed;
 		z-index: 100;
 		inset: 0;
 	}
