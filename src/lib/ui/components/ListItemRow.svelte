@@ -1,5 +1,4 @@
 <script lang="ts">
-	import type { ListItem } from '$lib/server/db/schema';
 	import { wrap } from '$lib/wrap.svelte';
 	import { Checkbox } from 'm3-svelte';
 	import { usePress } from 'svelte-gestures';
@@ -7,16 +6,16 @@
 	type Props = {
 		disabled?: boolean;
 		itemId: string;
-		status: ListItem['status'];
+		done: boolean;
 		amount: number;
 		text: string;
-		onToggle: (to: ListItem['status']) => Promise<void>;
+		onToggle: (done: boolean) => Promise<void>;
 		onLongPress: () => void;
 	};
 
-	let { disabled, amount, status, text, ...props }: Props = $props();
+	let { disabled, amount, done, text, ...props }: Props = $props();
 
-	let checked = $derived(status === 'done');
+	let checked = $derived(done);
 
 	const press = usePress(
 		() => !disabled && props.onLongPress(),
@@ -26,9 +25,9 @@
 	const handleToggle = wrap(async () => {
 		if (disabled) return;
 
-		const newStatus = checked ? 'done' : 'todo';
+		const newStatus = checked;
 
-		checked = newStatus === 'done'; // optimistic update
+		checked = newStatus; // optimistic update
 
 		await props.onToggle(newStatus);
 	});

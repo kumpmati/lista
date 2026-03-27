@@ -1,19 +1,15 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { getCurrentUser, signInGoogle } from '$lib/queries/auth.remote';
-	import { createList, getOwnLists } from '$lib/queries/list.remote';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
 
-	const user = $derived(await getCurrentUser());
-	const lists = $derived(user ? await getOwnLists() : null);
+	const lists = $derived([{ id: 'test', title: 'test list' }]);
 
 	const handleCreateList = async () => {
-		const list = await createList({ name: 'Untitled list' });
-		goto(resolve('/(app)/list/[listId]', { listId: list.id }));
+		alert('not implemented');
+		// goto(resolve('/(app)/list/[listId]', { listId: list.id }));
 	};
 </script>
 
@@ -36,28 +32,17 @@
 		</Button>
 	</Header>
 
-	{#if !user}
-		<Button
-			onclick={() =>
-				signInGoogle().then((d) => {
-					window.location.href = d.url;
-				})}
-		>
-			Google Sign In
-		</Button>
-	{:else}
-		<ul>
-			{#each lists as list (list.id)}
-				<li>
-					<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
-						{list.name}
-					</a>
-				</li>
-			{:else}
-				<li>No lists yet.</li>
-			{/each}
-		</ul>
-	{/if}
+	<ul>
+		{#each lists as list (list.id)}
+			<li>
+				<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
+					{list.title}
+				</a>
+			</li>
+		{:else}
+			<li>No lists yet.</li>
+		{/each}
+	</ul>
 </Main>
 
 <style>
