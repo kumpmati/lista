@@ -1,20 +1,27 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { InMemoryListEditor } from '$lib/editor/memory.svelte.js';
+	import { AutomergeListEditor } from '$lib/editor/automerge.svelte.js';
 	import type { ListV2 } from '$lib/types.js';
 	import ListEditor from '$lib/ui/ListEditor.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
+	import { Repo, type AutomergeUrl } from '@automerge/automerge-repo';
+	import { WebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
+	import { IndexedDBStorageAdapter } from '@automerge/automerge-repo-storage-indexeddb';
+	import { document } from '@automerge/automerge-repo-svelte-store';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
 
-	const list = $derived({
-		meta: { title: 'test list', version: 2 },
-		items: [],
-		groups: []
-	} satisfies ListV2);
+	let { params } = $props();
 
-	const editor = $derived(new InMemoryListEditor(list));
+	const repo = new Repo({
+		storage: new IndexedDBStorageAdapter(),
+		network: [new WebSocketClientAdapter('wss://sync.automerge.org')] // TODO: host own sync server
+	});
+
+	const doc = $derived(await document<ListV2>(params.listId as AutomergeUrl, repo));
+
+	const editor = $derived(new AutomergeListEditor(doc!));
 </script>
 
 <svelte:head>

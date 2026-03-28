@@ -1,15 +1,31 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import type { ListV2 } from '$lib/types';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
+	import { getContextRepo } from '@automerge/automerge-repo-svelte-store';
 	import { Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
+	import { PersistedState } from 'runed';
 
-	const lists = $derived([{ id: 'test', title: 'test list' }]);
+	const repo = getContextRepo();
+	const lists = new PersistedState('lists', [] as { id: string; title: string }[]);
 
 	const handleCreateList = async () => {
-		alert('not implemented');
-		// goto(resolve('/(app)/list/[listId]', { listId: list.id }));
+		const doc = repo.create({
+			meta: { title: 'Untitled list', version: 2 },
+			items: [],
+			groups: []
+		} satisfies ListV2);
+
+		doc.doneLoading = () => console.log('done loading');
+
+		lists.current.push({
+			id: doc.documentId.toString(),
+			title: doc.doc().meta.title
+		});
+
+		// goto(resolve('/(app)/list/[listId]', { listId: doc.documentId.toString() }));
 	};
 </script>
 
@@ -33,7 +49,7 @@
 	</Header>
 
 	<ul>
-		{#each lists as list (list.id)}
+		{#each lists.current as list (list.id)}
 			<li>
 				<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
 					{list.title}
