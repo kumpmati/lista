@@ -1,6 +1,7 @@
 /* This is a copy of tailwind's preflight.css */
 
-*,
+/* dialog explicitly ignored to keep m3-svelte dialog placement correct */
+* :not(dialog),
 ::after,
 ::before,
 ::backdrop,
