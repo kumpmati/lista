@@ -1,6 +1,7 @@
 import { assert } from '$lib/assert';
 import type { ListEditor } from '$lib/interface';
 import type { ListV2, ListItemV2 } from '$lib/types';
+import { ImmutableString, type DocHandle } from '@automerge/automerge-repo';
 import { type AutomergeDocumentStore } from '@automerge/automerge-repo-svelte-store';
 import { nanoid } from 'nanoid';
 import { onDestroy } from 'svelte';
@@ -10,10 +11,13 @@ export class AutomergeListEditor implements ListEditor {
 	#handle: AutomergeDocumentStore<ListV2>;
 	#unsubscribers: (() => void)[]; // TODO: call unsubscribers when unmounting
 
+	raw: DocHandle<ListV2>;
 	current: Readonly<ListV2>;
 
 	constructor(doc: AutomergeDocumentStore<ListV2>) {
 		assert(doc, 'list not found');
+
+		this.raw = doc.handle;
 
 		const initial = get(doc);
 		assert(initial, 'list is null');
@@ -36,6 +40,14 @@ export class AutomergeListEditor implements ListEditor {
 		});
 
 		this.#unsubscribers.push(unsub);
+	}
+
+	async setTitle(title: string): Promise<void> {
+		assert(this.#handle, 'no document loaded');
+
+		this.#handle!.change((doc) => {
+			doc.meta.title = new ImmutableString(title);
+		});
 	}
 
 	/**

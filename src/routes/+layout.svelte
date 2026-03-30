@@ -3,19 +3,23 @@
 	import '../m3-theme.css';
 	import '../layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { setContextRepo } from '@automerge/automerge-repo-svelte-store';
 	import { Repo } from '@automerge/automerge-repo';
 	import { IndexedDBStorageAdapter } from '@automerge/automerge-repo-storage-indexeddb';
-	import { WebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
+	import { AutomergeRootEditor } from '$lib/editor/root/automerge.svelte';
+	import { setIdbContext, setRootEditorContext } from '$lib/context';
 
 	let { children } = $props();
 
-	const repo = new Repo({
-		storage: new IndexedDBStorageAdapter(),
-		network: [new WebSocketClientAdapter('wss://sync.automerge.org')] // TODO: host own
+	const idb = new IndexedDBStorageAdapter();
+	setIdbContext(idb);
+
+	const rootRepo = new Repo({
+		storage: idb,
+		shareConfig: { access: async () => false, announce: async () => false }
 	});
 
-	setContextRepo(repo);
+	const rootEditor = new AutomergeRootEditor(rootRepo);
+	setRootEditorContext(rootEditor);
 </script>
 
 <svelte:head>

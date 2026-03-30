@@ -1,31 +1,17 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import type { ListV2 } from '$lib/types';
+	import { getRootEditorContext } from '$lib/context';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
-	import { getContextRepo } from '@automerge/automerge-repo-svelte-store';
 	import { Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
-	import { PersistedState } from 'runed';
 
-	const repo = getContextRepo();
-	const lists = new PersistedState('lists', [] as { id: string; title: string }[]);
+	const root = getRootEditorContext();
 
 	const handleCreateList = async () => {
-		const doc = repo.create({
-			meta: { title: 'Untitled list', version: 2 },
-			items: [],
-			groups: []
-		} satisfies ListV2);
-
-		doc.doneLoading = () => console.log('done loading');
-
-		lists.current.push({
-			id: doc.documentId.toString(),
-			title: doc.doc().meta.title
-		});
-
-		// goto(resolve('/(app)/list/[listId]', { listId: doc.documentId.toString() }));
+		const item = await root.addList();
+		goto(resolve('/(app)/list/[listId]', { listId: item.id }));
 	};
 </script>
 
@@ -48,17 +34,22 @@
 		</Button>
 	</Header>
 
-	<ul>
-		{#each lists.current as list (list.id)}
-			<li>
-				<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
-					{list.title}
-				</a>
-			</li>
-		{:else}
-			<li>No lists yet.</li>
-		{/each}
-	</ul>
+	{#if root.loading}
+		<p>Loading...</p>
+	{:else}
+		<ul class="list">
+			{#each root.current.items as item (item.id)}
+				<li>
+					<a class="list-item m3-layer" href={resolve('/(app)/list/[listId]', { listId: item.id })}>
+						<span class="title">{item.title}</span>
+						<span class="items">{item.items || 0} items</span>
+					</a>
+				</li>
+			{:else}
+				<li>No lists yet.</li>
+			{/each}
+		</ul>
+	{/if}
 </Main>
 
 <style>
@@ -70,13 +61,33 @@
 	}
 
 	.list {
-		display: flex;
-		align-items: center;
-		padding-inline: 1.5rem;
-		padding-block: 1rem;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 1rem;
+		padding: 1rem;
+	}
 
+	li {
+		display: contents;
+	}
+
+	.list-item {
+		background-color: var(--m3c-surface-container);
+		border-radius: 0.75rem;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem 1.5rem;
 		text-decoration: none;
-		color: var(--white);
-		font-weight: bold;
+
+		.title {
+			font-size: 16px;
+			font-weight: bold;
+			color: var(--white);
+		}
+
+		.items {
+			margin-top: 0.25rem;
+			font-size: 14px;
+		}
 	}
 </style>

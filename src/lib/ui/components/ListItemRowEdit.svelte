@@ -79,6 +79,7 @@
 		position: relative;
 		z-index: 101;
 		gap: 1rem;
+		padding-left: 5px;
 	}
 
 	.buttons {
