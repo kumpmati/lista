@@ -7,6 +7,7 @@
 	import { Button } from 'm3-svelte';
 	import { Plus } from '@lucide/svelte';
 	import type { ListItemV2 } from '$lib/types';
+	import { ImmutableString } from '@automerge/automerge-repo';
 
 	let { editor }: { editor: ListEditor } = $props();
 
@@ -26,7 +27,7 @@
 
 	const handleUpdateItem = wrap(
 		async (id: string, amount: number, text: string) => {
-			await editor.updateItem(id, { amount, text });
+			await editor.updateItem(id, { amount, text: new ImmutableString(text) });
 		},
 		(id) => id // group pending status by item
 	);
@@ -45,7 +46,7 @@
 			{#if editing === item.id && !newItem}
 				<ListItemRowEdit
 					amount={item.amount}
-					text={item.text}
+					text={item.text.toString()}
 					onSave={async (amount, text) => {
 						editing = null;
 						handleUpdateItem.run(item.id, amount, text);
@@ -58,7 +59,7 @@
 					disabled={handleUpdateItem.pending.has(item.id) || handleToggleItem.pending.has(item.id)}
 					itemId={item.id}
 					done={item.done}
-					text={item.text}
+					text={item.text.toString()}
 					amount={item.amount}
 					onLongPress={() => (editing = item.id)}
 					onToggle={(done) => handleToggleItem.run(item.id, done)}
@@ -72,7 +73,13 @@
 			amount={newItem.amount}
 			text={newItem.text}
 			onSave={async (amount, text) => {
-				await handleCreateItem.run({ amount, text, groupId: null, done: false });
+				await handleCreateItem.run({
+					amount,
+					text: new ImmutableString(text),
+					groupId: null,
+					done: false
+				});
+
 				newItem = null;
 			}}
 			onCancel={() => (newItem = null)}

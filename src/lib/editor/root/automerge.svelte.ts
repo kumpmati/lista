@@ -73,7 +73,8 @@ export class AutomergeRootEditor implements RootEditor {
 				title: new ImmutableString(title),
 				version: 2,
 				// eslint-disable-next-line svelte/prefer-svelte-reactivity
-				createdAt: new Date()
+				createdAt: new Date(),
+				public: false
 			},
 			items: [],
 			groups: []
@@ -83,7 +84,7 @@ export class AutomergeRootEditor implements RootEditor {
 			id: doc.documentId.toString(),
 			title,
 			items: 0,
-			shared: false
+			public: false
 		};
 
 		await sleep(100); // wait a bit for document to be ready
@@ -96,7 +97,7 @@ export class AutomergeRootEditor implements RootEditor {
 	}
 
 	/**
-	 * Updates the root doc to match the list's current state.
+	 * Updates the root doc to match the list's current state, or adds a new item if not yet found.
 	 * @param id list ID
 	 * @param list data to use when syncing
 	 */
@@ -105,10 +106,17 @@ export class AutomergeRootEditor implements RootEditor {
 
 		this.#handle.change((root) => {
 			const index = root.items.findIndex((item) => item.id === id);
-			if (index === -1) return;
-
-			root.items[index].title = list.meta.title.toString();
-			root.items[index].items = list.items.length;
+			if (index === -1) {
+				root.items.push({
+					id,
+					title: list.meta.title.toString(),
+					items: list.items.length,
+					public: list.meta.public
+				});
+			} else {
+				root.items[index].title = list.meta.title.toString();
+				root.items[index].items = list.items.length;
+			}
 		});
 	}
 

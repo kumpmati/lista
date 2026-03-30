@@ -4,7 +4,7 @@ export type RootItem = {
 	id: string;
 	title: string;
 	items: number;
-	shared: boolean;
+	public: boolean;
 };
 
 export type ListV2 = {
@@ -12,6 +12,7 @@ export type ListV2 = {
 		title: ImmutableString;
 		version: 2;
 		createdAt: Date;
+		public: boolean;
 	};
 	groups: ListGroupV2[];
 	items: ListItemV2[];

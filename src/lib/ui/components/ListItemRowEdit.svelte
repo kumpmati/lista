@@ -4,6 +4,7 @@
 	import SubtleTextField from './SubtleTextField.svelte';
 	import { Button } from 'm3-svelte';
 	import { Save } from '@lucide/svelte';
+	import DeleteDialog from '../DeleteDialog.svelte';
 
 	type Props = {
 		text: string;
@@ -15,6 +16,7 @@
 
 	let { text = $bindable(), amount = $bindable(), onSave, onCancel, onDelete }: Props = $props();
 
+	let deleteDialogOpen = $state(false);
 	let currentAmount = $state(amount);
 	let currentText = $state(text);
 
@@ -24,6 +26,10 @@
 		else onCancel();
 	};
 </script>
+
+<DeleteDialog headline="Confirm deletion" bind:open={deleteDialogOpen} {onDelete}>
+	Delete item '{text}'?
+</DeleteDialog>
 
 <div
 	role="none"
@@ -37,7 +43,7 @@
 		<AmountPicker
 			bind:amount={currentAmount}
 			zeroAsDelete
-			onDelete={() => confirm(`Delete ${text}?`) && onDelete()}
+			onDelete={() => (deleteDialogOpen = true)}
 		/>
 
 		<form onsubmit={(e) => handleClose('save', e)}>

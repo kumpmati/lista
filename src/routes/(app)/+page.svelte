@@ -4,7 +4,7 @@
 	import { getRootEditorContext } from '$lib/context';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
-	import { Plus } from '@lucide/svelte';
+	import { Plus, Share2 } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
 
 	const root = getRootEditorContext();
@@ -41,6 +41,12 @@
 			{#each root.current.items as item (item.id)}
 				<li>
 					<a class="list-item m3-layer" href={resolve('/(app)/list/[listId]', { listId: item.id })}>
+						{#if item.public}
+							<Share2
+								style="min-width: 16px; height: 16px; position: absolute; top: 1rem; right: 1rem;"
+							/>
+						{/if}
+
 						<span class="title">{item.title}</span>
 						<span class="items">{item.items || 0} items</span>
 					</a>
@@ -72,17 +78,20 @@
 	}
 
 	.list-item {
-		background-color: var(--m3c-surface-container);
-		border-radius: 0.75rem;
+		position: relative;
 		display: flex;
 		flex-direction: column;
 		padding: 1rem;
+		border-radius: 0.75rem;
+		background-color: var(--m3c-surface-container);
 		text-decoration: none;
 
 		.title {
 			font-size: 16px;
 			font-weight: bold;
 			color: var(--white);
+
+			width: calc(100% - 1rem);
 
 			text-overflow: ellipsis;
 			white-space: nowrap;
