@@ -10,7 +10,7 @@
 <style>
 	div {
 		display: flex;
-		align-items: stretch;
+		align-items: center;
 		padding: 0.5rem;
 	}
 </style>

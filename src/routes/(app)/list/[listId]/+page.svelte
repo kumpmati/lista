@@ -11,6 +11,7 @@
 	import { document } from '@automerge/automerge-repo-svelte-store';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { Button, Dialog, TextFieldOutlined } from 'm3-svelte';
+	import { untrack } from 'svelte';
 
 	let { params } = $props();
 
@@ -35,8 +36,14 @@
 	const editor = $derived(new AutomergeListEditor(doc!));
 
 	$effect(() => {
-		if (!doc) return;
-		root.syncMeta(doc.documentId, editor.current);
+		if (!doc || root.loading) return;
+
+		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+		editor.current;
+
+		untrack(() => {
+			root.syncMeta(doc.documentId, editor.current);
+		});
 	});
 
 	const showTitleEdit = () => {
@@ -94,6 +101,7 @@
 		background-color: transparent;
 		padding-inline: 0.5rem;
 		border-radius: 4px;
+		align-self: stretch;
 	}
 
 	h1 {
