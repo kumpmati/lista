@@ -16,12 +16,12 @@
 </script>
 
 <svelte:head>
-	<title>My lists | Lista</title>
+	<title>Lista</title>
 </svelte:head>
 
 <Main>
 	<Header>
-		<h1>My lists</h1>
+		<h1>Lista</h1>
 		<Button
 			square
 			size="s"
@@ -54,7 +54,7 @@
 
 <style>
 	h1 {
-		margin-left: 1.5rem;
+		margin-left: 0.5rem;
 		font-size: 20px;
 		font-weight: bold;
 		color: var(--m3c-primary);
@@ -62,7 +62,7 @@
 
 	.list {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
 		gap: 1rem;
 		padding: 1rem;
 	}
@@ -76,13 +76,17 @@
 		border-radius: 0.75rem;
 		display: flex;
 		flex-direction: column;
-		padding: 1rem 1.5rem;
+		padding: 1rem;
 		text-decoration: none;
 
 		.title {
 			font-size: 16px;
 			font-weight: bold;
 			color: var(--white);
+
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
 		}
 
 		.items {
