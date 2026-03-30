@@ -1,11 +1,11 @@
+import type { ListV2 } from '$lib/types';
 import z from 'zod';
-import type { List, ListItem } from '../db/schema';
 
 export interface ListStore {
-	createList(l: CreateListBody): Promise<List>;
+	createList(l: CreateListBody): Promise<ListV2>;
 	deleteList(id: string): Promise<void>;
-	getUserLists(userId: string): Promise<List[]>;
-	getListById(listId: string): Promise<List & { items: ListItem[] }>;
+	getUserLists(userId: string): Promise<ListV2[]>;
+	getListById(listId: string): Promise<ListV2>;
 }
 
 export const createListBodySchema = z.object({

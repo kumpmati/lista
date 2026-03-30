@@ -1,19 +1,31 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { getCurrentUser, signInGoogle } from '$lib/queries/auth.remote';
-	import { createList, getOwnLists } from '$lib/queries/list.remote';
+	import type { ListV2 } from '$lib/types';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
+	import { getContextRepo } from '@automerge/automerge-repo-svelte-store';
 	import { Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
+	import { PersistedState } from 'runed';
 
-	const user = $derived(await getCurrentUser());
-	const lists = $derived(user ? await getOwnLists() : null);
+	const repo = getContextRepo();
+	const lists = new PersistedState('lists', [] as { id: string; title: string }[]);
 
 	const handleCreateList = async () => {
-		const list = await createList({ name: 'Untitled list' });
-		goto(resolve('/(app)/list/[listId]', { listId: list.id }));
+		const doc = repo.create({
+			meta: { title: 'Untitled list', version: 2 },
+			items: [],
+			groups: []
+		} satisfies ListV2);
+
+		doc.doneLoading = () => console.log('done loading');
+
+		lists.current.push({
+			id: doc.documentId.toString(),
+			title: doc.doc().meta.title
+		});
+
+		// goto(resolve('/(app)/list/[listId]', { listId: doc.documentId.toString() }));
 	};
 </script>
 
@@ -36,28 +48,17 @@
 		</Button>
 	</Header>
 
-	{#if !user}
-		<Button
-			onclick={() =>
-				signInGoogle().then((d) => {
-					window.location.href = d.url;
-				})}
-		>
-			Google Sign In
-		</Button>
-	{:else}
-		<ul>
-			{#each lists as list (list.id)}
-				<li>
-					<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
-						{list.name}
-					</a>
-				</li>
-			{:else}
-				<li>No lists yet.</li>
-			{/each}
-		</ul>
-	{/if}
+	<ul>
+		{#each lists.current as list (list.id)}
+			<li>
+				<a class="list m3-layer" href={resolve('/(app)/list/[listId]', { listId: list.id })}>
+					{list.title}
+				</a>
+			</li>
+		{:else}
+			<li>No lists yet.</li>
+		{/each}
+	</ul>
 </Main>
 
 <style>

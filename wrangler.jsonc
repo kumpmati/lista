@@ -16,13 +16,5 @@
 			"enabled": true,
 			"invocation_logs": true
 		}
-	},
-
-	"vars": {
-		"ORIGIN": "https://lista.matsku.dev"
-	},
-
-	"secrets": {
-		"required": ["DATABASE_URL", "BETTER_AUTH_SECRET", "GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"]
 	}
 }
