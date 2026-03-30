@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fade } from 'svelte/transition';
+	import { fade, fly } from 'svelte/transition';
 	import AmountPicker from './AmountPicker.svelte';
 	import SubtleTextField from './SubtleTextField.svelte';
 	import { Button } from 'm3-svelte';
@@ -50,7 +50,7 @@
 		</form>
 	</div>
 
-	<div class="buttons">
+	<div class="buttons" in:fly={{ y: -10, duration: 100 }}>
 		<Button
 			iconType="left"
 			variant="tonal"
@@ -67,7 +67,7 @@
 <style>
 	.backdrop {
 		background-color: black;
-		opacity: 0.9;
+		opacity: 0.7;
 		position: fixed;
 		z-index: 100;
 		inset: 0;
@@ -84,7 +84,7 @@
 	.buttons {
 		position: absolute;
 		bottom: 0;
-		right: 1rem;
+		right: 1.5rem;
 		transform: translateY(100%);
 		display: flex;
 	}

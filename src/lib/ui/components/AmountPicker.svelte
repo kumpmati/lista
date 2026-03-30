@@ -15,7 +15,21 @@
 <div>
 	<Button
 		iconType="full"
-		size="xs"
+		size="s"
+		variant="text"
+		onclick={() => (amount += 1)}
+		style="position: absolute; top: 0; transform: translateY(-100%)"
+	>
+		<Plus />
+	</Button>
+
+	{#key amount}
+		<span in:fly={{ y: -10, duration: 150 }}>{amount}</span>
+	{/key}
+
+	<Button
+		iconType="full"
+		size="s"
 		variant="text"
 		onclick={() => {
 			if (zeroAsDelete && amount <= 1) {
@@ -24,34 +38,29 @@
 
 			amount = Math.max(amount - 1, zeroAsDelete ? 1 : 0);
 		}}
+		style="position: absolute; bottom: 0; transform: translateY(100%)"
 	>
 		{#if amount <= 1 && zeroAsDelete}
-			<Trash2 />
+			<Trash2 color="var(--m3c-error)" />
 		{:else}
 			<Minus />
 		{/if}
-	</Button>
-
-	{#key amount}
-		<span in:fly={{ y: -10, duration: 150 }}>{amount}</span>
-	{/key}
-
-	<Button iconType="full" size="xs" variant="text" onclick={() => (amount += 1)}>
-		<Plus />
 	</Button>
 </div>
 
 <style>
 	div {
+		position: relative;
 		display: flex;
+		flex-direction: column;
 		align-items: center;
 	}
 
 	span {
-		width: 1.5ch;
+		width: 2.5rem;
 		text-align: center;
 		font-weight: bold;
-		color: var(--m3c-primary);
+		color: var(--m3c-on-surface);
 		user-select: none;
 	}
 </style>
