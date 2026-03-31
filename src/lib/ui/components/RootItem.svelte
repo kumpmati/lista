@@ -11,14 +11,22 @@
 		isSelected?: boolean;
 		id: string;
 		title: string;
-		items: number;
+		description: string;
 		isPublic: boolean;
 		onLongPress?: () => void;
 		onToggleSelect?: (value: boolean) => void;
 	};
 
-	let { isSelectable, isSelected, id, title, items, isPublic, onLongPress, onToggleSelect }: Props =
-		$props();
+	let {
+		isSelectable,
+		isSelected,
+		id,
+		title,
+		description,
+		isPublic,
+		onLongPress,
+		onToggleSelect
+	}: Props = $props();
 
 	const press = usePress(
 		() => {
@@ -53,7 +61,7 @@
 	{/if}
 
 	<span class="title">{title}</span>
-	<span class="items">{items || 0} items</span>
+	<span class="description">{description}</span>
 </button>
 
 <style>
@@ -97,9 +105,14 @@
 		overflow: hidden;
 	}
 
-	.items {
+	.description {
 		color: var(--m3c-primary);
 		margin-top: 0.25rem;
 		font-size: 14px;
+
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
+		width: 100%;
 	}
 </style>

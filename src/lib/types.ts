@@ -3,7 +3,7 @@ import type { ImmutableString } from '@automerge/automerge-repo';
 export type RootItem = {
 	id: string;
 	title: string;
-	items: number;
+	description: string;
 	public: boolean;
 };
 

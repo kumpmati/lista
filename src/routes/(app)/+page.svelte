@@ -122,7 +122,7 @@
 					isSelected={selected.has(item.id)}
 					id={item.id}
 					title={item.title}
-					items={item.items}
+					description={item.description}
 					isPublic={item.public}
 					onLongPress={() => handleStartSelect(item.id)}
 					onToggleSelect={(val) => handleSetSelected(item.id, val)}

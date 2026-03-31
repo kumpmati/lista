@@ -93,7 +93,7 @@ export class AutomergeRootEditor implements RootEditor {
 		const item: RootItem = {
 			id: doc.url.toString(),
 			title,
-			items: 0,
+			description: `0 items`,
 			public: false
 		};
 
@@ -121,12 +121,14 @@ export class AutomergeRootEditor implements RootEditor {
 				root.items.push({
 					id,
 					title: list.meta.title.toString(),
-					items: list.items.length,
+					description: 'no items',
 					public: true
 				});
 			} else {
+				const texts = list.items.map((i) => (i.amount > 1 ? `${i.text} (${i.amount}x)` : i.text));
+
 				root.items[index].title = list.meta.title.toString();
-				root.items[index].items = list.items.length;
+				root.items[index].description = texts.join(', ').slice(0, 50);
 			}
 		});
 	}
