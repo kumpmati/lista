@@ -1,23 +1,20 @@
 import { assert } from '$lib/assert';
 import type { ListEditor } from '$lib/interface';
 import type { ListV2, ListItemV2 } from '$lib/types';
-import { ImmutableString, type DocHandle } from '@automerge/automerge-repo';
+import { ImmutableString } from '@automerge/automerge-repo';
 import { type AutomergeDocumentStore } from '@automerge/automerge-repo-svelte-store';
 import { nanoid } from 'nanoid';
-import { onDestroy } from 'svelte';
+// import { onDestroy } from 'svelte';
 import { get } from 'svelte/store';
 
 export class AutomergeListEditor implements ListEditor {
 	#handle: AutomergeDocumentStore<ListV2>;
 	#unsubscribers: (() => void)[]; // TODO: call unsubscribers when unmounting
 
-	raw: DocHandle<ListV2>;
 	current: Readonly<ListV2>;
 
 	constructor(doc: AutomergeDocumentStore<ListV2>) {
 		assert(doc, 'list not found');
-
-		this.raw = doc.handle;
 
 		const initial = get(doc);
 		assert(initial, 'list is null');
@@ -27,11 +24,6 @@ export class AutomergeListEditor implements ListEditor {
 		this.#unsubscribers = [];
 
 		this.init();
-
-		onDestroy(() => {
-			console.log('onDestroy called');
-			this.#unsubscribers.forEach((cb) => cb());
-		});
 	}
 
 	private async init() {
@@ -101,5 +93,9 @@ export class AutomergeListEditor implements ListEditor {
 		}
 
 		return updated;
+	}
+
+	cleanup(): void {
+		this.#unsubscribers.forEach((cb) => cb());
 	}
 }

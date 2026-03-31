@@ -1,49 +1,26 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { getIdbContext, getRootEditorContext } from '$lib/context.js';
-	import { AutomergeListEditor } from '$lib/editor/list/automerge.svelte.js';
-	import type { ListV2 } from '$lib/types.js';
 	import ListEditor from '$lib/ui/ListEditor.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
-	import { Repo, type AutomergeUrl } from '@automerge/automerge-repo';
-	import { WebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
-	import { document } from '@automerge/automerge-repo-svelte-store';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { Button, Dialog, TextFieldOutlined } from 'm3-svelte';
 	import { untrack } from 'svelte';
 
-	let { params } = $props();
+	let { data } = $props();
 
 	let titleEditOpen = $state(false);
 	let titleDraft = $state<string>('');
 
-	const root = getRootEditorContext();
-	const idb = getIdbContext();
-
-	const repo = new Repo({
-		storage: idb, // use same IDB instance as root document
-		network: [new WebSocketClientAdapter('wss://sync.automerge.org')], // TODO: host own sync server
-
-		// don't broadcast new documents with other peers.
-		shareConfig: {
-			announce: async () => false, // don't announce new documents to other peers
-			access: async () => true // any peer that knows the document ID can access documents
-		}
-	});
-
-	const doc = $derived(await document<ListV2>(params.listId as AutomergeUrl, repo));
-	const editor = $derived(new AutomergeListEditor(doc!));
+	let doc = $derived(data.doc);
+	let editor = $derived(data.editor);
 
 	$effect(() => {
-		if (!doc || root.loading) return;
-
-		// eslint-disable-next-line @typescript-eslint/no-unused-expressions
-		editor.current;
-
-		untrack(() => {
-			root.syncMeta(doc.documentId, editor.current);
-		});
+		// keep root doc in sync when editing list
+		data.root.syncMeta(
+			untrack(() => doc.url),
+			editor.current
+		);
 	});
 
 	const showTitleEdit = () => {
@@ -59,7 +36,7 @@
 		if (!titleDraft || !doc) return;
 
 		await editor.setTitle(titleDraft);
-		await root.syncMeta(doc!.documentId, editor.current);
+		await data.root.syncMeta(doc!.url, editor.current);
 
 		titleEditOpen = false;
 	};

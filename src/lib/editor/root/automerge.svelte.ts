@@ -1,52 +1,65 @@
 import type { RootEditor } from '$lib/interface';
 import type { RootItem, ListV2 } from '$lib/types';
 import { sleep } from '$lib/utils/sleep';
-import { ImmutableString, type AutomergeUrl, type Repo } from '@automerge/automerge-repo';
+import {
+	ImmutableString,
+	isValidAutomergeUrl,
+	type AutomergeUrl,
+	type Repo
+} from '@automerge/automerge-repo';
 import { document, type AutomergeDocumentStore } from '@automerge/automerge-repo-svelte-store';
-import { onDestroy } from 'svelte';
+// import { onDestroy } from 'svelte';
 import { get } from 'svelte/store';
 
 const ROOT_DOCUMENT_ID_KEY = 'lista-root-docId';
 
+type RootState = {
+	items: RootItem[];
+};
+
 export class AutomergeRootEditor implements RootEditor {
 	#repo: Repo;
-	#handle: AutomergeDocumentStore<{ items: RootItem[] }> | null = null;
+	#handle: AutomergeDocumentStore<RootState> | null = null;
 	#unsubscribers: (() => void)[] = [];
-	loading = $state(false);
-	current = $state<Readonly<{ items: RootItem[] }>>({ items: [] });
+	#initPromise: Promise<void> | null = null;
+
+	current = $state<Readonly<RootState>>({ items: [] });
 
 	constructor(repo: Repo) {
 		this.#repo = repo;
-		this.init();
+		this.#initPromise = this.init();
 
-		onDestroy(() => this.#unsubscribers.forEach((cb) => cb()));
+		// onDestroy(() => this.#unsubscribers.forEach((cb) => cb()));
 	}
 
 	private async getOrCreateRootDoc() {
-		const rootDocumentId = localStorage.getItem(ROOT_DOCUMENT_ID_KEY);
-		if (rootDocumentId) {
-			return await document<{ items: RootItem[] }>(rootDocumentId as AutomergeUrl, this.#repo);
+		const rootDocUrl = localStorage.getItem(ROOT_DOCUMENT_ID_KEY);
+		if (rootDocUrl) {
+			return await document<RootState>(rootDocUrl as AutomergeUrl, this.#repo);
 		}
 
-		const doc = this.#repo.create<{ items: RootItem[] }>({ items: [] });
-		localStorage.setItem(ROOT_DOCUMENT_ID_KEY, doc.documentId.toString());
+		const doc = this.#repo.create<RootState>({ items: [] });
+		localStorage.setItem(ROOT_DOCUMENT_ID_KEY, doc.url.toString());
 
-		return await document<{ items: RootItem[] }>(doc.documentId, this.#repo);
+		return await document<RootState>(doc.url, this.#repo);
+	}
+
+	public async onReady(): Promise<void> {
+		if (!this.#initPromise) {
+			console.log('onready: running init');
+			this.#initPromise = this.init();
+		}
+
+		await this.#initPromise;
 	}
 
 	public async init() {
-		try {
-			this.loading = true;
-
-			this.#handle = await this.getOrCreateRootDoc();
-			if (!this.#handle) {
-				throw new Error('failed to get root document');
-			}
-
-			this.subscribe();
-		} finally {
-			this.loading = false;
+		this.#handle = await this.getOrCreateRootDoc();
+		if (!this.#handle) {
+			throw new Error('failed to get root document');
 		}
+
+		this.subscribe();
 	}
 
 	private subscribe() {
@@ -81,7 +94,7 @@ export class AutomergeRootEditor implements RootEditor {
 		} satisfies ListV2);
 
 		const item: RootItem = {
-			id: doc.documentId.toString(),
+			id: doc.url.toString(),
 			title,
 			items: 0,
 			public: false
@@ -102,6 +115,7 @@ export class AutomergeRootEditor implements RootEditor {
 	 * @param list data to use when syncing
 	 */
 	async syncMeta(id: string, list: ListV2): Promise<void> {
+		if (!isValidAutomergeUrl(id)) throw new Error('not a valid automerge url');
 		if (!this.#handle) throw new Error('not initialized');
 
 		this.#handle.change((root) => {
@@ -125,6 +139,7 @@ export class AutomergeRootEditor implements RootEditor {
 	 * @param id ID of list to delete
 	 */
 	async removeList(id: string): Promise<void> {
+		if (!isValidAutomergeUrl(id)) throw new Error('not a valid automerge url');
 		if (!this.#handle) throw new Error('not initialized');
 		this.#repo.delete(id as AutomergeUrl);
 
@@ -132,5 +147,9 @@ export class AutomergeRootEditor implements RootEditor {
 			const index = root.items.findIndex((item) => item.id === id);
 			if (index !== -1) root.items.splice(index, 1);
 		});
+	}
+
+	cleanup(): void {
+		this.#unsubscribers.forEach((cb) => cb());
 	}
 }

@@ -1,16 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { getRootEditorContext } from '$lib/context';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { Plus, Share2 } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
 
-	const root = getRootEditorContext();
+	let { data } = $props();
 
 	const handleCreateList = async () => {
-		const item = await root.addList();
+		const item = await data.root.addList();
 		goto(resolve('/(app)/list/[listId]', { listId: item.id }));
 	};
 </script>
@@ -34,28 +33,24 @@
 		</Button>
 	</Header>
 
-	{#if root.loading}
-		<p>Loading...</p>
-	{:else}
-		<ul class="list">
-			{#each root.current.items as item (item.id)}
-				<li>
-					<a class="list-item m3-layer" href={resolve('/(app)/list/[listId]', { listId: item.id })}>
-						{#if item.public}
-							<Share2
-								style="min-width: 16px; height: 16px; position: absolute; top: 1rem; right: 1rem;"
-							/>
-						{/if}
+	<ul class="list">
+		{#each data.root.current.items as item (item.id)}
+			<li>
+				<a class="list-item m3-layer" href={resolve('/(app)/list/[listId]', { listId: item.id })}>
+					{#if item.public}
+						<Share2
+							style="min-width: 16px; height: 16px; position: absolute; top: 1rem; right: 1rem;"
+						/>
+					{/if}
 
-						<span class="title">{item.title}</span>
-						<span class="items">{item.items || 0} items</span>
-					</a>
-				</li>
-			{:else}
-				<li>No lists yet.</li>
-			{/each}
-		</ul>
-	{/if}
+					<span class="title">{item.title}</span>
+					<span class="items">{item.items || 0} items</span>
+				</a>
+			</li>
+		{:else}
+			<li>No lists yet.</li>
+		{/each}
+	</ul>
 </Main>
 
 <style>
