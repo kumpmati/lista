@@ -1,3 +1,4 @@
+import { PUBLIC_SYNC_SERVER_URL } from '$env/static/public';
 import { AutomergeListEditor } from '$lib/editor/list/automerge.svelte';
 import type { ListV2 } from '$lib/types';
 import { isValidAutomergeUrl, Repo } from '@automerge/automerge-repo';
@@ -10,7 +11,7 @@ export const load = async ({ params, parent }) => {
 
 	const repo = new Repo({
 		storage: idb, // use same IDB instance as root document
-		network: [new WebSocketClientAdapter('wss://sync.automerge.org')], // TODO: host own sync server
+		network: [new WebSocketClientAdapter(PUBLIC_SYNC_SERVER_URL)],
 
 		// don't broadcast new documents with other peers.
 		shareConfig: {

@@ -11,6 +11,10 @@
 	"workers_dev": true,
 	"preview_urls": true,
 
+	"vars": {
+		"PUBLIC_SYNC_SERVER_URL": "wss://sync.automerge.org"
+	},
+
 	"observability": {
 		"logs": {
 			"enabled": true,
