@@ -5,7 +5,7 @@
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { ArrowLeft, EllipsisVertical } from '@lucide/svelte';
-	import { Button, Dialog, Menu, MenuItem, TextFieldOutlined } from 'm3-svelte';
+	import { Button, Dialog, Menu, MenuItem, snackbar, TextFieldOutlined } from 'm3-svelte';
 	import { onDestroy, untrack } from 'svelte';
 
 	let { data } = $props();
@@ -48,16 +48,31 @@
 	const handleCheckAll = async () => {
 		editMenuOpen = false;
 		await editor.batchUpdate((item) => (item.done = true));
+
+		snackbar('Checked all items', undefined, true);
 	};
 
 	const handleUncheckAll = async () => {
 		editMenuOpen = false;
 		await editor.batchUpdate((item) => (item.done = false));
+
+		snackbar('Unchecked all items', undefined, true);
 	};
 
+	// TODO: add confirm dialog
 	const handleDeleteCompleted = async () => {
 		editMenuOpen = false;
-		await editor.batchUpdate((item, remove) => item.done && remove());
+
+		let n = 0;
+
+		await editor.batchUpdate((item, remove) => {
+			if (item.done) {
+				remove();
+				n++;
+			}
+		});
+
+		snackbar(`Cleared ${n} items`, undefined, true);
 	};
 </script>
 

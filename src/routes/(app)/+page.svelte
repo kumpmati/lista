@@ -7,7 +7,7 @@
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { wrap } from '$lib/utils/wrap.svelte.js';
 	import { Plus, X } from '@lucide/svelte';
-	import { Button, Menu, MenuItem, SplitButton } from 'm3-svelte';
+	import { Button, Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
 	import { flip } from 'svelte/animate';
 	import { SvelteSet } from 'svelte/reactivity';
 
@@ -19,13 +19,18 @@
 
 	const handleCreateList = wrap(async () => {
 		const item = await data.root.addList();
-		goto(resolve('/(app)/list/[listId]', { listId: item.id }));
+		await goto(resolve('/(app)/list/[listId]', { listId: item.id }));
+
+		snackbar('Created new list', undefined, true);
 	});
 
 	const handleDeleteSelected = async () => {
+		const num = selected.size;
 		await Promise.allSettled(selected.values().map((id) => data.root.removeList(id)));
 
 		handleStopSelect();
+
+		snackbar(`Deleted ${num} lists`, undefined, true);
 	};
 
 	const handleStartSelect = (id: string) => {

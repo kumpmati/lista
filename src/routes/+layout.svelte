@@ -4,6 +4,7 @@
 	import '../layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { onDestroy } from 'svelte';
+	import { Snackbar } from 'm3-svelte';
 
 	let { children, data } = $props();
 
@@ -14,4 +15,5 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+<Snackbar />
 {@render children()}
