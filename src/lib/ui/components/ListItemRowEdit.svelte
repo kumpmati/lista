@@ -56,7 +56,7 @@
 		</form>
 	</div>
 
-	<div class="buttons" in:fly={{ y: -10, duration: 100 }}>
+	<div class="buttons" in:fly={{ y: -10, duration: 150 }}>
 		<Button
 			iconType="left"
 			variant="tonal"
@@ -90,7 +90,7 @@
 
 	.buttons {
 		position: absolute;
-		bottom: 0;
+		bottom: 1rem;
 		right: 1.5rem;
 		transform: translateY(100%);
 		display: flex;
@@ -101,7 +101,7 @@
 		display: flex;
 		align-items: center;
 		line-height: 1;
-		padding: 10px 1.5rem;
+		padding: 1.5rem;
 		padding-left: 0.5rem;
 	}
 

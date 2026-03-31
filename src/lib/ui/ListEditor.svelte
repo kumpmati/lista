@@ -63,6 +63,8 @@
 		disabled={newItem !== null}
 		onclick={() => (newItem = { amount: 1, text: '' })}
 		iconType="left"
+		size="xs"
+		square
 	>
 		<Plus />
 		Item
@@ -75,7 +77,7 @@
 		gap: 1rem;
 		align-items: center;
 		margin-top: 0.5rem;
-		padding: 0 1rem;
+		padding: 0 0.75rem;
 	}
 
 	ul {
