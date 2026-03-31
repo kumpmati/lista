@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { wrap } from '$lib/wrap.svelte';
 	import { Checkbox } from 'm3-svelte';
 	import { usePress } from 'svelte-gestures';
 
@@ -9,7 +8,7 @@
 		done: boolean;
 		amount: number;
 		text: string;
-		onToggle: (done: boolean) => Promise<void>;
+		onToggle: (done: boolean) => Promise<unknown>;
 		onLongPress: () => void;
 	};
 
@@ -22,7 +21,7 @@
 		() => ({ timeframe: 300, triggerBeforeFinished: true })
 	);
 
-	const handleToggle = wrap(async () => {
+	const handleToggle = async () => {
 		if (disabled) return;
 
 		const newStatus = checked;
@@ -30,18 +29,13 @@
 		checked = newStatus; // optimistic update
 
 		await props.onToggle(newStatus);
-	});
+	};
 </script>
 
 <div class="item m3-layer" class:disabled {...press}>
 	<label>
 		<Checkbox>
-			<input
-				type="checkbox"
-				bind:checked
-				disabled={disabled || handleToggle.pending.size > 0}
-				onchange={() => handleToggle.run()}
-			/>
+			<input type="checkbox" bind:checked {disabled} onchange={() => handleToggle()} />
 		</Checkbox>
 	</label>
 

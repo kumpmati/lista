@@ -3,6 +3,7 @@ import { SvelteSet } from 'svelte/reactivity';
 /**
  * Wraps an async function so that its loading state can be tracked.
  * @param func function to wrap
+ * @param key function that maps a function call to a unique pending state
  * @returns
  */
 export const wrap = <T extends unknown[], R>(
