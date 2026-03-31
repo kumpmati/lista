@@ -7,6 +7,9 @@
 	--purple-300: #dab2ff;
 	--purple-950: #3c0366;
 	--red-300: #ffa2a2;
+
+	/* disables iOS tap to zoom for entire app */
+	touch-action: manipulation;
 }
 
 html,
