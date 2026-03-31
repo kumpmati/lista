@@ -6,7 +6,7 @@ import { document } from '@automerge/automerge-repo-svelte-store';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ params, parent }) => {
-	const { idb } = await parent();
+	const { idb, root } = await parent();
 
 	const repo = new Repo({
 		storage: idb, // use same IDB instance as root document
@@ -27,6 +27,8 @@ export const load = async ({ params, parent }) => {
 	if (!doc) {
 		error(404, 'list not found');
 	}
+
+	await root.syncMeta(doc.url, doc.handle.doc());
 
 	const editor = new AutomergeListEditor(doc);
 

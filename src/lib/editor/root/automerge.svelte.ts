@@ -50,7 +50,7 @@ export class AutomergeRootEditor implements RootEditor {
 		await this.#initPromise;
 	}
 
-	public async init() {
+	private async init() {
 		this.#handle = await this.getOrCreateRootDoc();
 		if (!this.#handle) {
 			throw new Error('failed to get root document');
@@ -122,7 +122,7 @@ export class AutomergeRootEditor implements RootEditor {
 					id,
 					title: list.meta.title.toString(),
 					items: list.items.length,
-					public: list.meta.public
+					public: true
 				});
 			} else {
 				root.items[index].title = list.meta.title.toString();
