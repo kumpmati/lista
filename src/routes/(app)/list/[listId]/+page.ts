@@ -23,7 +23,7 @@ export const load = async ({ params, parent }) => {
 		error(400, 'invalid list id');
 	}
 
-	const doc = await document<ListV2>(params.listId, repo);
+	const doc = await document<ListV2>(params.listId, repo).catch(() => null);
 	if (!doc) {
 		error(404, 'list not found');
 	}
