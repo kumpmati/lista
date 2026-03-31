@@ -5,7 +5,7 @@
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { ArrowLeft } from '@lucide/svelte';
 	import { Button, Dialog, TextFieldOutlined } from 'm3-svelte';
-	import { untrack } from 'svelte';
+	import { onDestroy, untrack } from 'svelte';
 
 	let { data } = $props();
 
@@ -14,6 +14,8 @@
 
 	let doc = $derived(data.doc);
 	let editor = $derived(data.editor);
+
+	onDestroy(() => editor.cleanup());
 
 	$effect(() => {
 		// keep root doc in sync when editing list

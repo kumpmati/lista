@@ -4,12 +4,11 @@ import type { ListV2, ListItemV2 } from '$lib/types';
 import { ImmutableString } from '@automerge/automerge-repo';
 import { type AutomergeDocumentStore } from '@automerge/automerge-repo-svelte-store';
 import { nanoid } from 'nanoid';
-// import { onDestroy } from 'svelte';
 import { get } from 'svelte/store';
 
 export class AutomergeListEditor implements ListEditor {
 	#handle: AutomergeDocumentStore<ListV2>;
-	#unsubscribers: (() => void)[]; // TODO: call unsubscribers when unmounting
+	#unsubscribers: (() => void)[];
 
 	current: Readonly<ListV2>;
 
@@ -26,7 +25,7 @@ export class AutomergeListEditor implements ListEditor {
 		this.init();
 	}
 
-	private async init() {
+	private init() {
 		const unsub = this.#handle!.subscribe((val) => {
 			if (val) this.current = val;
 		});
@@ -34,6 +33,10 @@ export class AutomergeListEditor implements ListEditor {
 		this.#unsubscribers.push(unsub);
 	}
 
+	/**
+	 * Updates the title of a list.
+	 * @param title new title
+	 */
 	async setTitle(title: string): Promise<void> {
 		assert(this.#handle, 'no document loaded');
 

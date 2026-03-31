@@ -8,7 +8,6 @@ import {
 	type Repo
 } from '@automerge/automerge-repo';
 import { document, type AutomergeDocumentStore } from '@automerge/automerge-repo-svelte-store';
-// import { onDestroy } from 'svelte';
 import { get } from 'svelte/store';
 
 const ROOT_DOCUMENT_ID_KEY = 'lista-root-docId';
@@ -28,8 +27,6 @@ export class AutomergeRootEditor implements RootEditor {
 	constructor(repo: Repo) {
 		this.#repo = repo;
 		this.#initPromise = this.init();
-
-		// onDestroy(() => this.#unsubscribers.forEach((cb) => cb()));
 	}
 
 	private async getOrCreateRootDoc() {
