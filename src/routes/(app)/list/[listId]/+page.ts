@@ -14,7 +14,7 @@ export const load = async ({ params, parent }) => {
 
 		// don't broadcast new documents with other peers.
 		shareConfig: {
-			announce: async () => false, // don't announce new documents to other peers
+			announce: async () => true, // don't announce new documents to other peers
 			access: async () => true // any peer that knows the document ID can access documents
 		}
 	});
