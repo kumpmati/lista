@@ -5,6 +5,7 @@
 	import DeleteDialog from '$lib/ui/DeleteDialog.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
+	import { wrap } from '$lib/utils/wrap.svelte.js';
 	import { Plus, X } from '@lucide/svelte';
 	import { Button, Menu, MenuItem, SplitButton } from 'm3-svelte';
 	import { flip } from 'svelte/animate';
@@ -16,10 +17,10 @@
 	let isSelecting = $state(false);
 	const selected = new SvelteSet<string>();
 
-	const handleCreateList = async () => {
+	const handleCreateList = wrap(async () => {
 		const item = await data.root.addList();
 		goto(resolve('/(app)/list/[listId]', { listId: item.id }));
-	};
+	});
 
 	const handleDeleteSelected = async () => {
 		await Promise.allSettled(selected.values().map((id) => data.root.removeList(id)));
@@ -99,7 +100,8 @@
 				title="Create list"
 				variant="filled"
 				iconType="full"
-				onclick={handleCreateList}
+				onclick={handleCreateList.run}
+				disabled={handleCreateList.pending.size > 0}
 				style="margin-left: auto;"
 			>
 				<Plus />
