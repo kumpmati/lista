@@ -133,6 +133,7 @@
 		font-size: 20px;
 		font-weight: bold;
 		color: var(--m3c-primary);
+		user-select: none;
 	}
 
 	.list {

@@ -80,6 +80,7 @@
 		background-color: transparent;
 		text-align: left;
 		width: 100%;
+		user-select: none;
 
 		padding: 1rem;
 		border-radius: 0.75rem;
