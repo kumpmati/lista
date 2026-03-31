@@ -60,7 +60,8 @@
 	label {
 		user-select: none;
 		pointer-events: none;
-		margin-bottom: 0.5rem;
+		margin-bottom: 0.25rem;
+		margin-left: auto;
 	}
 
 	button {

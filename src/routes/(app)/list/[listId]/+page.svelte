@@ -48,20 +48,20 @@
 	<title>{editor.current.meta.title}</title>
 </svelte:head>
 
+<Dialog headline="Edit title" bind:open={titleEditOpen}>
+	<form id="edit-title" method="dialog" onsubmit={saveTitleEdit}>
+		<TextFieldOutlined name="title" required label="Title" bind:value={titleDraft} />
+	</form>
+
+	{#snippet buttons()}
+		<Button form="edit-title" variant="tonal" type="button" onclick={cancelTitleEdit}>
+			Cancel
+		</Button>
+		<Button form="edit-title" type="submit">Save</Button>
+	{/snippet}
+</Dialog>
+
 <Main>
-	<Dialog headline="Edit title" bind:open={titleEditOpen}>
-		<form id="edit-title" method="dialog" onsubmit={saveTitleEdit}>
-			<TextFieldOutlined name="title" required label="Title" bind:value={titleDraft} />
-		</form>
-
-		{#snippet buttons()}
-			<Button form="edit-title" variant="tonal" type="button" onclick={cancelTitleEdit}>
-				Cancel
-			</Button>
-			<Button form="edit-title" type="submit">Save</Button>
-		{/snippet}
-	</Dialog>
-
 	<Header>
 		<Button iconType="full" href={resolve('/')} variant="text">
 			<ArrowLeft />

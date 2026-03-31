@@ -100,7 +100,7 @@
 				variant="filled"
 				iconType="full"
 				onclick={handleCreateList}
-				style="margin-right: .5rem; margin-left: auto;"
+				style="margin-left: auto;"
 			>
 				<Plus />
 			</Button>
@@ -129,7 +129,6 @@
 
 <style>
 	h1 {
-		margin-left: 0.5rem;
 		font-size: 20px;
 		font-weight: bold;
 		color: var(--m3c-primary);
