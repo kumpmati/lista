@@ -64,7 +64,7 @@
 	.list {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-		gap: 1rem;
+		gap: 0.5rem;
 		padding: 1rem;
 	}
 
