@@ -69,7 +69,7 @@
 <Main>
 	<Header>
 		{#if isSelecting}
-			<h1>{selected.size} selected</h1>
+			<h1>{selected.size} Selected</h1>
 
 			<div style="margin-left: auto;">
 				<SplitButton

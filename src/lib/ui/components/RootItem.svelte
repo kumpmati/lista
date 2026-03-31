@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { sleep } from '$lib/utils/sleep';
 	import { Share2 } from '@lucide/svelte';
 	import { Checkbox } from 'm3-svelte';
 	import { usePress } from 'svelte-gestures';
@@ -22,23 +21,15 @@
 		$props();
 
 	const press = usePress(
-		() => !isSelectable && onLongPress?.(),
-		() => ({ timeframe: 300, triggerBeforeFinished: true }),
-		{
-			onpressdown: () => !isSelectable && (isLongPress = true),
-			onpressup: () => sleep(1).then(() => (isLongPress = false))
-		}
+		() => {
+			if (!isSelectable) onLongPress?.();
+		},
+		() => ({ timeframe: 300, triggerBeforeFinished: true })
 	);
 
 	let selected = $derived(isSelectable && isSelected);
 
-	// to prevent instant deselection after long press,
-	// disable selection during long presses
-	let isLongPress = $state(false);
-
-	const handleClick = () => {
-		if (isLongPress) return; // don't toggle when releasing after long press
-
+	const handleClick = async () => {
 		if (!isSelectable) {
 			goto(resolve('/(app)/list/[listId]', { listId: id }));
 			return;
