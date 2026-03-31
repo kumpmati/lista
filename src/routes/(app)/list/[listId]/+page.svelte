@@ -1,14 +1,16 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import ListEditor from '$lib/ui/ListEditor.svelte';
+	import MenuContainer from '$lib/ui/components/MenuContainer.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
-	import { ArrowLeft } from '@lucide/svelte';
-	import { Button, Dialog, TextFieldOutlined } from 'm3-svelte';
+	import { ArrowLeft, EllipsisVertical } from '@lucide/svelte';
+	import { Button, Dialog, Menu, MenuItem, TextFieldOutlined } from 'm3-svelte';
 	import { onDestroy, untrack } from 'svelte';
 
 	let { data } = $props();
 
+	let editMenuOpen = $state(false);
 	let titleEditOpen = $state(false);
 	let titleDraft = $state<string>('');
 
@@ -42,6 +44,21 @@
 
 		titleEditOpen = false;
 	};
+
+	const handleCheckAll = async () => {
+		editMenuOpen = false;
+		await editor.batchUpdate((item) => (item.done = true));
+	};
+
+	const handleUncheckAll = async () => {
+		editMenuOpen = false;
+		await editor.batchUpdate((item) => (item.done = false));
+	};
+
+	const handleDeleteCompleted = async () => {
+		editMenuOpen = false;
+		await editor.batchUpdate((item, remove) => item.done && remove());
+	};
 </script>
 
 <svelte:head>
@@ -70,6 +87,20 @@
 		<button class="heading-title m3-layer" onclick={showTitleEdit}>
 			<h1>{editor.current.meta.title.toString()}</h1>
 		</button>
+
+		<MenuContainer bind:open={editMenuOpen}>
+			{#snippet trigger()}
+				<Button iconType="full" variant="text" onclick={() => (editMenuOpen = !editMenuOpen)}>
+					<EllipsisVertical />
+				</Button>
+			{/snippet}
+
+			<Menu>
+				<MenuItem onclick={handleCheckAll}>Check all</MenuItem>
+				<MenuItem onclick={handleUncheckAll}>Uncheck all</MenuItem>
+				<MenuItem onclick={handleDeleteCompleted}>Clear completed</MenuItem>
+			</Menu>
+		</MenuContainer>
 	</Header>
 
 	<ListEditor {editor} />

@@ -98,6 +98,28 @@ export class AutomergeListEditor implements ListEditor {
 		return updated;
 	}
 
+	/**
+	 * Updates all items in the list as a single patch using the given mutate function.
+	 * @param mutate function that mutates the item
+	 */
+	async batchUpdate(mutate: (item: ListItemV2, remove: () => void) => void): Promise<void> {
+		assert(this.#handle, 'no document loaded');
+
+		this.#handle!.change((doc) => {
+			const trash: ListItemV2[] = [];
+
+			// don't delete while iterating so items aren't skipped
+			for (let i = 0; i < doc.items.length; i++) {
+				const remove = () => trash.push(doc.items[i]);
+				mutate(doc.items[i], remove);
+			}
+
+			trash.forEach((item) => {
+				doc.items.splice(doc.items.indexOf(item), 1);
+			});
+		});
+	}
+
 	cleanup(): void {
 		this.#unsubscribers.forEach((cb) => cb());
 	}

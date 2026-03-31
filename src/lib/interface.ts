@@ -17,6 +17,7 @@ export interface ListEditor {
 	addItem(item: Omit<ListItemV2, 'id'>): Promise<ListItemV2>;
 	removeItem(itemId: string): Promise<void>;
 	updateItem(itemId: string, data: Partial<Omit<ListItemV2, 'id'>>): Promise<ListItemV2>;
+	batchUpdate(mutate: (item: ListItemV2) => void): Promise<void>;
 	setTitle(title: string): Promise<void>;
 
 	cleanup(): void;
