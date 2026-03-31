@@ -57,6 +57,7 @@
 		height: 3rem;
 		line-height: 1;
 		position: relative;
+		user-select: none;
 
 		&.disabled {
 			opacity: 0.5;
