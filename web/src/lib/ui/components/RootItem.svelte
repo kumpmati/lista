@@ -56,11 +56,13 @@
 		</label>
 	{/if}
 
-	{#if isPublic}
-		<Share2 style="min-width: 16px; height: 16px; position: absolute; top: 1rem; right: 1rem;" />
-	{/if}
+	<div class="title-row">
+		<span class="title">{title}</span>
 
-	<span class="title">{title}</span>
+		{#if isPublic}
+			<Share2 style="min-width: 16px; height: 16px; color: var(--m3c-primary)" />
+		{/if}
+	</div>
 	<span class="description">{description}</span>
 </button>
 
@@ -91,6 +93,12 @@
 		&.selected {
 			box-shadow: 0 0 0 2px var(--m3c-primary);
 		}
+	}
+
+	.title-row {
+		display: flex;
+		justify-content: space-between;
+		width: 100%;
 	}
 
 	.title {

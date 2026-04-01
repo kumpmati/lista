@@ -12,6 +12,8 @@ import { get } from 'svelte/store';
 
 const ROOT_DOCUMENT_ID_KEY = 'lista-root-docId';
 
+const EMPTY_DESCRIPTION = '-';
+
 type RootState = {
 	items: RootItem[];
 };
@@ -93,7 +95,7 @@ export class AutomergeRootEditor implements RootEditor {
 		const item: RootItem = {
 			id: doc.url.toString(),
 			title,
-			description: `0 items`,
+			description: EMPTY_DESCRIPTION,
 			public: false
 		};
 
@@ -121,14 +123,14 @@ export class AutomergeRootEditor implements RootEditor {
 				root.items.push({
 					id,
 					title: list.meta.title.toString(),
-					description: 'no items',
+					description: EMPTY_DESCRIPTION,
 					public: true
 				});
 			} else {
 				const texts = list.items.map((i) => (i.amount > 1 ? `${i.text} (${i.amount}x)` : i.text));
 
 				root.items[index].title = list.meta.title.toString();
-				root.items[index].description = texts.join(', ').slice(0, 50);
+				root.items[index].description = texts.join(', ').slice(0, 50) || EMPTY_DESCRIPTION;
 			}
 		});
 	}
