@@ -9,9 +9,13 @@ import { error } from '@sveltejs/kit';
 export const load = async ({ params, parent }) => {
 	const { idb, root } = await parent();
 
+	// the custom sync server groups durable objects by document id, improving sync performance
+	// since each document gets its own durable object.
+	const syncServerUrl = `${PUBLIC_SYNC_SERVER_URL}/?doc=${params.listId}`;
+
 	const repo = new Repo({
 		storage: idb, // use same IDB instance as root document
-		network: [new WebSocketClientAdapter(PUBLIC_SYNC_SERVER_URL)],
+		network: [new WebSocketClientAdapter(syncServerUrl)],
 
 		// don't broadcast new documents with other peers.
 		shareConfig: {
