@@ -5,6 +5,7 @@
 	import DeleteDialog from '$lib/ui/DeleteDialog.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
+	import { sortByLastUpdated, sortByPinned } from '$lib/utils/sort.js';
 	import { wrap } from '$lib/utils/wrap.svelte.js';
 	import { Plus, X } from '@lucide/svelte';
 	import { Button, Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
@@ -16,6 +17,10 @@
 	let deleteDialogOpen = $state(false);
 	let isSelecting = $state(false);
 	const selected = new SvelteSet<string>();
+
+	let sortedItems = $derived(
+		data.root.current.items.toSorted(sortByLastUpdated).toSorted(sortByPinned)
+	);
 
 	const handleCreateList = wrap(async () => {
 		const item = await data.root.addList();
@@ -58,6 +63,16 @@
 	const handleSelectNone = () => {
 		selected.clear();
 	};
+
+	const handleSetPinToSelected = async (pinned: boolean) => {
+		await Promise.allSettled(selected.values().map((id) => data.root.setPinned(id, pinned)));
+
+		if (pinned) {
+			snackbar(`Pinned ${selected.size} lists`);
+		} else {
+			snackbar(`Unpinned ${selected.size} lists`);
+		}
+	};
 </script>
 
 <svelte:head>
@@ -91,8 +106,10 @@
 						<Menu>
 							<MenuItem onclick={handleSelectAll}>Select all</MenuItem>
 							<MenuItem onclick={handleSelectNone}>Select none</MenuItem>
+							<MenuItem onclick={() => handleSetPinToSelected(true)}>Pin</MenuItem>
+							<MenuItem onclick={() => handleSetPinToSelected(false)}>Unpin</MenuItem>
 							<MenuItem onclick={() => (deleteDialogOpen = true)} disabled={selected.size === 0}>
-								Delete selected
+								Delete
 							</MenuItem>
 						</Menu>
 					{/snippet}
@@ -115,7 +132,7 @@
 	</Header>
 
 	<ul class="list">
-		{#each data.root.current.items as item (item.id)}
+		{#each sortedItems as item (item.id)}
 			<li animate:flip={{ duration: 150 }}>
 				<RootItem
 					isSelectable={isSelecting}
@@ -124,6 +141,8 @@
 					title={item.title}
 					description={item.description}
 					isPublic={item.public}
+					pinned={item.pinned ?? false}
+					updatedAt={item.updatedAt}
 					onLongPress={() => handleStartSelect(item.id)}
 					onToggleSelect={(val) => handleSetSelected(item.id, val)}
 				/>

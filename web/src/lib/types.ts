@@ -5,6 +5,8 @@ export type RootItem = {
 	title: string;
 	description: string;
 	public: boolean;
+	pinned?: boolean;
+	updatedAt?: Date;
 };
 
 export type ListV2 = {

@@ -7,6 +7,7 @@ export interface RootEditor {
 	addList(title?: string): Promise<RootItem>;
 	syncMeta(id: string, list: ListV2): Promise<void>;
 	removeList(id: string): Promise<void>;
+	setPinned(id: string, pinned: boolean): Promise<void>;
 
 	cleanup(): void;
 }

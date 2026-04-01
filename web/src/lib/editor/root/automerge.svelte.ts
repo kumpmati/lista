@@ -112,6 +112,7 @@ export class AutomergeRootEditor implements RootEditor {
 	 * Updates the root doc to match the list's current state, or adds a new item if not yet found.
 	 * @param id list ID
 	 * @param list data to use when syncing
+	 * @param updated if true, update the root item's updatedAt field
 	 */
 	async syncMeta(id: string, list: ListV2): Promise<void> {
 		if (!isValidAutomergeUrl(id)) throw new Error('not a valid automerge url');
@@ -124,13 +125,18 @@ export class AutomergeRootEditor implements RootEditor {
 					id,
 					title: list.meta.title.toString(),
 					description: EMPTY_DESCRIPTION,
-					public: true
+					public: true,
+					// eslint-disable-next-line svelte/prefer-svelte-reactivity
+					updatedAt: new Date()
 				});
 			} else {
 				const texts = list.items.map((i) => (i.amount > 1 ? `${i.text} (${i.amount}x)` : i.text));
 
 				root.items[index].title = list.meta.title.toString();
 				root.items[index].description = texts.join(', ').slice(0, 50) || EMPTY_DESCRIPTION;
+
+				// eslint-disable-next-line svelte/prefer-svelte-reactivity
+				root.items[index].updatedAt = new Date();
 			}
 		});
 	}
@@ -147,6 +153,19 @@ export class AutomergeRootEditor implements RootEditor {
 		this.#handle.change((root) => {
 			const index = root.items.findIndex((item) => item.id === id);
 			if (index !== -1) root.items.splice(index, 1);
+		});
+	}
+
+	/**
+	 * Sets a list's pinned status
+	 */
+	async setPinned(id: string, pinned: boolean): Promise<void> {
+		if (!isValidAutomergeUrl(id)) throw new Error('not a valid automerge url');
+		if (!this.#handle) throw new Error('not initialized');
+
+		this.#handle.change((root) => {
+			const index = root.items.findIndex((item) => item.id === id);
+			if (index !== -1) root.items[index].pinned = pinned;
 		});
 	}
 

@@ -2,11 +2,8 @@
 	--m3-font: 'Atkinson Hyperlegible', system-ui;
 	font-family: var(--m3-font);
 
-	--white: #fff;
-	--black: #000;
-	--purple-300: #dab2ff;
-	--purple-950: #3c0366;
-	--red-300: #ffa2a2;
+	--text: light-dark(#000, #fff);
+	--background: light-dark(#fff, #000);
 
 	/* disables iOS tap to zoom for entire app */
 	touch-action: manipulation;

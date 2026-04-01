@@ -72,7 +72,7 @@
 
 <style>
 	.backdrop {
-		background-color: black;
+		background-color: var(--background);
 		opacity: 0.7;
 		position: fixed;
 		z-index: 100;
