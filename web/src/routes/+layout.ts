@@ -11,10 +11,8 @@ export const ssr = false;
 export const load = async () => {
 	const idb = new IndexedDBStorageAdapter();
 
-	const rootRepo = new Repo({
-		storage: idb,
-		shareConfig: { access: async () => false, announce: async () => false }
-	});
+	// we don't intend on sharing the root document, so no network adapter.
+	const rootRepo = new Repo({ storage: idb });
 
 	const root: RootEditor = new AutomergeRootEditor(rootRepo);
 	await root.onReady();
