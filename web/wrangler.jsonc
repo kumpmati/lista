@@ -16,9 +16,7 @@
 	},
 
 	"observability": {
-		"logs": {
-			"enabled": true,
-			"invocation_logs": true
-		}
+		"head_sampling_rate": 0.05,
+		"enabled": true
 	}
 }
