@@ -17,7 +17,7 @@
 	let doc = $derived(data.doc);
 	let editor = $derived(data.editor);
 
-	onDestroy(() => editor.cleanup());
+	onDestroy(() => data.cleanup());
 
 	$effect(() => {
 		// keep root doc in sync when editing list

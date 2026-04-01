@@ -33,5 +33,10 @@ export const load = async ({ params, parent }) => {
 
 	const editor = new AutomergeListEditor(doc);
 
-	return { doc, editor };
+	const cleanup = () => {
+		editor.cleanup();
+		repo.shutdown();
+	};
+
+	return { doc, editor, cleanup };
 };
