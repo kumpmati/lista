@@ -5,6 +5,8 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { onDestroy } from 'svelte';
 	import { Snackbar } from 'm3-svelte';
+	import PwaMeta from '$lib/pwa/PwaMeta.svelte';
+	import OfflineNotify from '$lib/pwa/OfflineNotify.svelte';
 
 	let { children, data } = $props();
 
@@ -15,5 +17,8 @@
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
+<OfflineNotify />
+<PwaMeta />
 <Snackbar />
+
 {@render children()}

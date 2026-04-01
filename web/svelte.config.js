@@ -14,7 +14,17 @@ const config = {
 		}
 	},
 	kit: {
-		adapter: adapter()
+		adapter: adapter(),
+
+		version: {
+			name: 'v0.1.0',
+			pollInterval: 5 * 60 * 1000 // 5 minutes
+		},
+
+		serviceWorker: {
+			// required by @vite-pwa/sveltekit when importing virtual:pwa-* modules
+			register: false
+		}
 	}
 };
 
