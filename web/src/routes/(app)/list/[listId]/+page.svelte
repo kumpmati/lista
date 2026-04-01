@@ -127,6 +127,7 @@
 		padding-inline: 0.5rem;
 		border-radius: 4px;
 		align-self: stretch;
+		text-align: left;
 	}
 
 	h1 {
