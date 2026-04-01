@@ -12,7 +12,7 @@
 	"preview_urls": true,
 
 	"vars": {
-		"PUBLIC_SYNC_SERVER_URL": "wss://sync.automerge.org"
+		"PUBLIC_SYNC_SERVER_URL": "wss://sync.lista.matsku.dev"
 	},
 
 	"observability": {
