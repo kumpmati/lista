@@ -75,8 +75,8 @@ export class CustomWebSocketAdapter extends NetworkAdapter {
 
 		// update socket map with sender id
 		this.#sockets.setUntracked(socket, { id: val.id, peerId: senderId });
-
-		console.log('set session', { id: val.id, peerId: senderId });
+		// save the peer id in the attachment, so that it's persisted during hibernation
+		socket.serializeAttachment({ id: val.id, peerId: senderId });
 
 		const selectedProtocolVersion = selectProtocol(supportedProtocolVersions);
 		if (selectedProtocolVersion === null) {

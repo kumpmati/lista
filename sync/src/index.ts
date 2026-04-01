@@ -45,7 +45,7 @@ export class AutomergeSyncDurableObject extends DurableObject<Env> {
 			if (attachment) {
 				// If we previously attached state to our WebSocket,
 				// let's add it to `sessions` map to restore the state of the connection.
-				this.sessions.set(ws, { ...attachment });
+				this.sessions.setUntracked(ws, { ...attachment });
 			}
 		});
 
