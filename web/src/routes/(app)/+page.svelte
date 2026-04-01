@@ -1,14 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import NewListButton from '$lib/ui/components/NewListButton.svelte';
 	import RootItem from '$lib/ui/components/RootItem.svelte';
 	import DeleteDialog from '$lib/ui/DeleteDialog.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { sortByLastUpdated, sortByPinned } from '$lib/utils/sort.js';
 	import { wrap } from '$lib/utils/wrap.svelte.js';
-	import { Plus, X } from '@lucide/svelte';
-	import { Button, Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
+	import { X } from '@lucide/svelte';
+	import { Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
 	import { flip } from 'svelte/animate';
 	import { SvelteSet } from 'svelte/reactivity';
 
@@ -118,16 +119,7 @@
 		{:else}
 			<h1>My lists</h1>
 
-			<Button
-				title="Create list"
-				variant="filled"
-				iconType="full"
-				onclick={handleCreateList.run}
-				disabled={handleCreateList.pending.size > 0}
-				style="margin-left: auto;"
-			>
-				<Plus />
-			</Button>
+			<NewListButton onclick={handleCreateList.run} disabled={handleCreateList.pending.size > 0} />
 		{/if}
 	</Header>
 
@@ -166,6 +158,7 @@
 		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 		gap: 0.5rem;
 		padding: 1rem;
+		margin-bottom: 3rem;
 	}
 
 	li {
