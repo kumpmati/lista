@@ -2,7 +2,7 @@ import { DurableObject } from 'cloudflare:workers';
 import { MapWithListener } from './utils/map';
 import { Repo } from '@automerge/automerge-repo';
 import { CustomWebSocketAdapter } from './adapter';
-import { createRepo } from './repo';
+import { createRepo } from './utils/repo';
 import { SessionData } from './types';
 
 /**
@@ -116,8 +116,10 @@ export default {
 	 * @returns The response to be sent back to the client
 	 */
 	async fetch(request, env, ctx): Promise<Response> {
-		// TODO: should we use automerge document ID as key?
-		const stub = env.AUTOMERGE_DO.getByName('global');
+		const url = new URL(request.url);
+		const docId = url.searchParams.get('doc') ?? 'global';
+
+		const stub = env.AUTOMERGE_DO.getByName(docId);
 		return stub.fetch(request);
 	},
 } satisfies ExportedHandler<Env>;
