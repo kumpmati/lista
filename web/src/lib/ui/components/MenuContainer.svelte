@@ -7,12 +7,13 @@
 		open?: boolean;
 		trigger: Snippet;
 		children: Snippet;
+		style?: string;
 	};
 
-	let { open = $bindable(), trigger, children }: Props = $props();
+	let { open = $bindable(), trigger, children, style }: Props = $props();
 </script>
 
-<div style="position: relative; margin-left: auto;" {@attach useClickOutside(() => (open = false))}>
+<div style="position: relative;{style}" {@attach useClickOutside(() => (open = false))}>
 	{@render trigger()}
 
 	{#if open}

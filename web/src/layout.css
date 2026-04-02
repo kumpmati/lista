@@ -3,6 +3,7 @@
 	font-family: var(--m3-font);
 
 	--text: light-dark(#000, #fff);
+	--text-subtle: light-dark(#808080, #808080);
 	--background: light-dark(#fff, #000);
 
 	/* disables iOS tap to zoom for entire app */
