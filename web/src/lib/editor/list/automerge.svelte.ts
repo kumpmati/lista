@@ -120,6 +120,17 @@ export class AutomergeListEditor implements ListEditor {
 		});
 	}
 
+	/**
+	 * Makes the list public.
+	 */
+	async makePublic(): Promise<void> {
+		assert(this.#handle, 'no document loaded');
+
+		this.#handle!.change((doc) => {
+			doc.meta.public = true; // cannot be changed back to false
+		});
+	}
+
 	cleanup(): void {
 		this.#unsubscribers.forEach((cb) => cb());
 	}

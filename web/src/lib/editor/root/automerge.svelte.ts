@@ -125,7 +125,7 @@ export class AutomergeRootEditor implements RootEditor {
 					id,
 					title: list.meta.title.toString(),
 					description: EMPTY_DESCRIPTION,
-					public: true,
+					public: list.meta.public,
 					// eslint-disable-next-line svelte/prefer-svelte-reactivity
 					updatedAt: new Date()
 				});
@@ -134,6 +134,7 @@ export class AutomergeRootEditor implements RootEditor {
 
 				root.items[index].title = list.meta.title.toString();
 				root.items[index].description = texts.join(', ').slice(0, 50) || EMPTY_DESCRIPTION;
+				root.items[index].public = list.meta.public;
 
 				// eslint-disable-next-line svelte/prefer-svelte-reactivity
 				root.items[index].updatedAt = new Date();

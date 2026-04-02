@@ -1,15 +1,18 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { PUBLIC_ORIGIN } from '$env/static/public';
 	import ListEditor from '$lib/ui/ListEditor.svelte';
 	import MenuContainer from '$lib/ui/components/MenuContainer.svelte';
+	import ShareDialog from '$lib/ui/dialogs/ShareDialog.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { ArrowLeft, EllipsisVertical } from '@lucide/svelte';
 	import { Button, Dialog, Menu, MenuItem, snackbar, TextFieldOutlined } from 'm3-svelte';
 	import { onDestroy, untrack } from 'svelte';
 
-	let { data } = $props();
+	let { params, data } = $props();
 
+	let shareMenuOpen = $state(false);
 	let editMenuOpen = $state(false);
 	let titleEditOpen = $state(false);
 	let titleDraft = $state<string>('');
@@ -74,11 +77,27 @@
 
 		snackbar(`Cleared ${n} items`, undefined, true);
 	};
+
+	const handleShare = async () => {
+		const url = `${PUBLIC_ORIGIN}/list/${params.listId}`;
+
+		try {
+			await editor.makePublic();
+			await navigator.clipboard.writeText(url);
+			snackbar('Link copied to clipboard', undefined, true);
+		} catch {
+			snackbar('Failed to copy share link', undefined, true);
+		}
+	};
 </script>
 
 <svelte:head>
 	<title>{editor.current.meta.title}</title>
 </svelte:head>
+
+<ShareDialog bind:open={shareMenuOpen} onShare={handleShare}>
+	Do you want to share this list? Anyone with the link will be able to edit it.
+</ShareDialog>
 
 <Dialog headline="Edit title" bind:open={titleEditOpen}>
 	<form id="edit-title" method="dialog" onsubmit={saveTitleEdit}>
@@ -111,6 +130,7 @@
 			{/snippet}
 
 			<Menu>
+				<MenuItem onclick={() => (shareMenuOpen = true)}>Share list</MenuItem>
 				<MenuItem onclick={handleCheckAll}>Check all</MenuItem>
 				<MenuItem onclick={handleUncheckAll}>Uncheck all</MenuItem>
 				<MenuItem onclick={handleDeleteCompleted}>Clear completed</MenuItem>

@@ -4,7 +4,7 @@
 	import SubtleTextField from './SubtleTextField.svelte';
 	import { Button } from 'm3-svelte';
 	import { Save } from '@lucide/svelte';
-	import DeleteDialog from '../DeleteDialog.svelte';
+	import DeleteDialog from '../dialogs/DeleteDialog.svelte';
 
 	type Props = {
 		text: string;

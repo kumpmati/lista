@@ -3,7 +3,7 @@
 	import { resolve } from '$app/paths';
 	import NewListButton from '$lib/ui/components/NewListButton.svelte';
 	import RootItem from '$lib/ui/components/RootItem.svelte';
-	import DeleteDialog from '$lib/ui/DeleteDialog.svelte';
+	import DeleteDialog from '$lib/ui/dialogs/DeleteDialog.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { sortByLastUpdated, sortByPinned } from '$lib/utils/sort.js';
