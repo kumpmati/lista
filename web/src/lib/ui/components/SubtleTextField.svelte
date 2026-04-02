@@ -14,7 +14,6 @@
 		border-radius: 4px;
 		background-color: var(--m3c-surface-container);
 		font-size: 1rem;
-		font-family: var(--m3c-font);
 		width: 100%;
 
 		transition: background-color 100ms;

@@ -139,7 +139,6 @@
 		background-color: transparent;
 		width: 100%;
 		font-size: 18px;
-		font-family: var(--m3c-font);
 		color: var(--m3c-primary);
 		font-weight: bold;
 		padding-block: 12px;

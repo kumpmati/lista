@@ -10,6 +10,11 @@
 	touch-action: manipulation;
 }
 
+button,
+input {
+	font-family: var(--m3-font);
+}
+
 html,
 body {
 	background-color: var(--m3c-surface-container-lowest);
