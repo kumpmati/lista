@@ -64,7 +64,7 @@
 {/snippet}
 
 {#snippet newItemButton(groupId: string | null)}
-	{#if !newItem}
+	{#if newItem?.groupId !== groupId}
 		<div class="buttons">
 			<Button
 				variant="text"
