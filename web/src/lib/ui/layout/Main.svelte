@@ -21,7 +21,8 @@
 			width: calc(100% - 2rem);
 			background-color: var(--m3c-surface);
 			border-radius: 1rem;
-			margin-top: 2rem;
+			margin-top: 3rem;
+			margin-bottom: 3rem;
 		}
 	}
 </style>

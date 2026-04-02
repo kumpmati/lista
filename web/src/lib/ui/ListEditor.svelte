@@ -133,7 +133,7 @@
 		display: flex;
 		flex-direction: column;
 		margin-top: 1rem;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	.buttons {
