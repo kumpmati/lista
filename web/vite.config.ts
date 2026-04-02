@@ -20,7 +20,7 @@ export default defineConfig({
 				start_url: '/',
 				scope: '/',
 				description: 'A simple checklist application with collaborative editing',
-				theme_color: '#665591', // --m3c-primary (light)
+				theme_color: undefined, // defined in app.html instead
 				background_color: '#000',
 				display: 'standalone',
 				icons: [
