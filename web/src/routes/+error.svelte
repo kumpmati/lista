@@ -11,7 +11,7 @@
 	</h1>
 
 	<Button href="/" variant="elevated" size="xs" iconType="left">
-		<ArrowLeft size={16} />
+		<ArrowLeft stroke-linecap="square" />
 		Back Home
 	</Button>
 </main>

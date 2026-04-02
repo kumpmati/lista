@@ -105,7 +105,7 @@
 					y="down"
 					title="Stop selecting"
 				>
-					<X />
+					<X stroke-linecap="square" />
 
 					{#snippet menu()}
 						<Menu>

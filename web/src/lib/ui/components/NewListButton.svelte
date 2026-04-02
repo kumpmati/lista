@@ -71,7 +71,7 @@
 			Cancel
 		</Button>
 		<Button form="list-import-form" type="submit" iconType="left" disabled={importLoading}>
-			<Import />
+			<Import stroke-linecap="butt" />
 			Import
 		</Button>
 	{/snippet}
@@ -86,11 +86,11 @@
 			onclick={() => (importMenuOpen = true)}
 			{disabled}
 		>
-			<Import />
+			<Import stroke-linecap="butt" />
 		</Button>
 
 		<Button title="Create list" variant="filled" iconType="full" {onclick} {disabled}>
-			<Plus />
+			<Plus stroke-linecap="square" />
 		</Button>
 	</div>
 </DesktopOnly>
@@ -110,7 +110,7 @@
 		</Button>
 
 		<Button size="m" iconType="full" {onclick} {disabled}>
-			<Plus />
+			<Plus stroke-linecap="square" />
 		</Button>
 	</div>
 </MobileOnly>

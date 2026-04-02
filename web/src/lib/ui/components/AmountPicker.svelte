@@ -20,7 +20,7 @@
 		onclick={() => (amount += 1)}
 		style="position: absolute; top: 0; transform: translateY(-100%)"
 	>
-		<Plus />
+		<Plus stroke-linecap="square" />
 	</Button>
 
 	{#key amount}
@@ -40,7 +40,7 @@
 		}}
 		style="position: absolute; bottom: 0; transform: translateY(100%)"
 	>
-		<Minus />
+		<Minus stroke-linecap="square" />
 	</Button>
 </div>
 

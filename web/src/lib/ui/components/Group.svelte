@@ -72,13 +72,13 @@
 				style="margin-right: auto;"
 				onclick={() => confirm('Delete group and all its items?') && onDelete?.()}
 			>
-				<Trash2 />
+				<Trash2 stroke-linecap="square" />
 			</Button>
 		{/if}
 
 		<Button form="group-edit-{id}" type="reset" variant="tonal">Cancel</Button>
 		<Button form="group-edit-{id}" type="submit">
-			<Save />
+			<Save stroke-linecap="square" />
 			Save
 		</Button>
 	{/snippet}
@@ -98,7 +98,7 @@
 		</span>
 
 		<span class="icon" class:flipped={open}>
-			<ChevronUp size={18} />
+			<ChevronUp size={18} stroke-linecap="square" />
 		</span>
 	</button>
 

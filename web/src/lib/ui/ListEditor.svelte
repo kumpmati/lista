@@ -73,7 +73,7 @@
 				size="xs"
 				square
 			>
-				<Plus />
+				<Plus stroke-linecap="square" />
 				Item
 			</Button>
 		</div>

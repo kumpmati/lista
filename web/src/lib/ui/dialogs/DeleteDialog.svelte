@@ -26,7 +26,7 @@
 	{#snippet buttons()}
 		<Button variant="tonal" onclick={handleCancel}>Cancel</Button>
 		<Button onclick={handleConfirm} iconType="left" variant="filled">
-			<Trash2 />
+			<Trash2 stroke-linecap="square" />
 			Delete
 		</Button>
 	{/snippet}

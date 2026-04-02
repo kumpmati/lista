@@ -42,7 +42,7 @@
 			iconType="left"
 			disabled={handleConfirm.pending.size > 0}
 		>
-			<ListPlus />
+			<ListPlus stroke-linecap="square" />
 			Create
 		</Button>
 	{/snippet}

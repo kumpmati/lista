@@ -64,7 +64,7 @@
 			style="margin-left: auto;"
 			onclick={() => handleClose('save')}
 		>
-			<Save />
+			<Save stroke-linecap="square" />
 			Save
 		</Button>
 	</div>

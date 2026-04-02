@@ -75,7 +75,7 @@
 
 	<div class="bottom">
 		{#if pinned}
-			<Pin style="min-width: 12px; width: 12px; height: 12px;" />
+			<Pin stroke-linecap="square" style="min-width: 12px; width: 12px; height: 12px;" />
 		{/if}
 
 		{#if updatedAt}

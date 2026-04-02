@@ -14,7 +14,7 @@
 <DesktopOnly>
 	<div style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
 		<Button {onclick} variant="text" iconType="full" title="Add group">
-			<ListPlus />
+			<ListPlus stroke-linecap="square" />
 		</Button>
 	</div>
 </DesktopOnly>
@@ -24,7 +24,7 @@
 		style="position: fixed; bottom: 1rem; right: 1rem; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;"
 	>
 		<Button {onclick} iconType="full" title="Add group">
-			<ListPlus />
+			<ListPlus stroke-linecap="square" />
 		</Button>
 	</div>
 </MobileOnly>

@@ -109,7 +109,7 @@
 <Main>
 	<Header>
 		<Button iconType="full" href={resolve('/')} variant="text">
-			<ArrowLeft />
+			<ArrowLeft stroke-linecap="square" />
 		</Button>
 
 		<ListTitle title={editor.current.meta.title.toString()} onchange={handleChangeTitle} />
