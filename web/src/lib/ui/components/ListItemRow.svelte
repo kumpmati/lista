@@ -53,9 +53,9 @@
 		width: 100%;
 		display: flex;
 		align-items: center;
-		padding: 10px 1.5rem;
-		height: 3rem;
-		line-height: 1;
+		padding: 0.5rem 1.5rem;
+		min-height: 2.5rem;
+		line-height: 1.5;
 		position: relative;
 		user-select: none;
 

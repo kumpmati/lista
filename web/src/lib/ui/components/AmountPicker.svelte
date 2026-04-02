@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Minus, Plus, Trash2 } from '@lucide/svelte';
+	import { Minus, Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
 	import { fly } from 'svelte/transition';
 
@@ -40,11 +40,7 @@
 		}}
 		style="position: absolute; bottom: 0; transform: translateY(100%)"
 	>
-		{#if amount <= 1 && zeroAsDelete}
-			<Trash2 color="var(--m3c-error)" />
-		{:else}
-			<Minus />
-		{/if}
+		<Minus />
 	</Button>
 </div>
 
