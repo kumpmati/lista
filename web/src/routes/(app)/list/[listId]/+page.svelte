@@ -50,14 +50,14 @@
 
 	const handleCheckAll = async () => {
 		editMenuOpen = false;
-		await editor.batchUpdate((item) => (item.done = true));
+		await editor.batchUpdateItems((item) => (item.done = true));
 
 		snackbar('Checked all items', undefined, true);
 	};
 
 	const handleUncheckAll = async () => {
 		editMenuOpen = false;
-		await editor.batchUpdate((item) => (item.done = false));
+		await editor.batchUpdateItems((item) => (item.done = false));
 
 		snackbar('Unchecked all items', undefined, true);
 	};
@@ -68,7 +68,7 @@
 
 		let n = 0;
 
-		await editor.batchUpdate((item, remove) => {
+		await editor.batchUpdateItems((item, remove) => {
 			if (item.done) {
 				remove();
 				n++;
