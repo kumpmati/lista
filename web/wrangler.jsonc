@@ -12,7 +12,8 @@
 	"preview_urls": true,
 
 	"vars": {
-		"PUBLIC_SYNC_SERVER_URL": "wss://sync.lista.matsku.dev"
+		"PUBLIC_SYNC_SERVER_URL": "wss://sync.lista.matsku.dev",
+		"PUBLIC_ORIGIN": "https://lista.matsku.dev"
 	},
 
 	"observability": {
