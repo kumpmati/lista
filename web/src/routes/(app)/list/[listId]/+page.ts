@@ -1,6 +1,7 @@
 import { PUBLIC_SYNC_SERVER_URL } from '$env/static/public';
 import { AutomergeListEditor } from '$lib/editor/list/automerge.svelte';
 import type { ListV2 } from '$lib/types';
+import { once } from '$lib/utils/once.js';
 import { isValidAutomergeUrl, Repo } from '@automerge/automerge-repo';
 import { WebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
 import { document } from '@automerge/automerge-repo-svelte-store';
@@ -37,10 +38,10 @@ export const load = async ({ params, parent }) => {
 
 	const editor = new AutomergeListEditor(doc);
 
-	const cleanup = () => {
+	const cleanup = once(() => {
 		editor.cleanup();
 		repo.shutdown();
-	};
+	});
 
 	return { doc, editor, cleanup };
 };
