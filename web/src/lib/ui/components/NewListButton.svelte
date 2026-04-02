@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { Plus } from '@lucide/svelte';
 	import { Button } from 'm3-svelte';
+	import DesktopOnly from '../layout/DesktopOnly.svelte';
+	import MobileOnly from '../layout/MobileOnly.svelte';
 
 	type Props = {
 		onclick: () => unknown;
@@ -10,7 +12,7 @@
 	let { onclick, disabled }: Props = $props();
 </script>
 
-<div class="desktop">
+<DesktopOnly>
 	<Button
 		title="Create list"
 		variant="filled"
@@ -21,11 +23,10 @@
 	>
 		<Plus />
 	</Button>
-</div>
+</DesktopOnly>
 
-<div class="mobile">
+<MobileOnly>
 	<Button
-		square
 		size="m"
 		style="position: fixed; bottom: 1rem; right: 1rem; z-index: 10;"
 		iconType="full"
@@ -34,26 +35,4 @@
 	>
 		<Plus />
 	</Button>
-</div>
-
-<style>
-	@media screen and (width < 40rem) {
-		.desktop {
-			display: none;
-		}
-
-		.mobile {
-			display: contents;
-		}
-	}
-
-	@media screen and (width >= 40rem) {
-		.mobile {
-			display: none;
-		}
-
-		.desktop {
-			display: contents;
-		}
-	}
-</style>
+</MobileOnly>

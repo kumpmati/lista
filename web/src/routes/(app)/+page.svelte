@@ -107,9 +107,13 @@
 						<Menu>
 							<MenuItem onclick={handleSelectAll}>Select all</MenuItem>
 							<MenuItem onclick={handleSelectNone}>Select none</MenuItem>
-							<MenuItem onclick={() => handleSetPinToSelected(true)}>Pin</MenuItem>
-							<MenuItem onclick={() => handleSetPinToSelected(false)}>Unpin</MenuItem>
-							<MenuItem onclick={() => (deleteDialogOpen = true)} disabled={selected.size === 0}>
+							<MenuItem onclick={() => handleSetPinToSelected(true)} disabled={!selected.size}>
+								Pin
+							</MenuItem>
+							<MenuItem onclick={() => handleSetPinToSelected(false)} disabled={!selected.size}>
+								Unpin
+							</MenuItem>
+							<MenuItem onclick={() => (deleteDialogOpen = true)} disabled={!selected.size}>
 								Delete
 							</MenuItem>
 						</Menu>

@@ -13,3 +13,23 @@ html,
 body {
 	background-color: var(--m3c-surface-container-lowest);
 }
+
+@media screen and (width < 40rem) {
+	.desktop-only {
+		display: none;
+	}
+
+	.mobile-only {
+		display: contents;
+	}
+}
+
+@media screen and (width >= 40rem) {
+	.desktop-only {
+		display: contents;
+	}
+
+	.mobile-only {
+		display: none;
+	}
+}
