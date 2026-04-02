@@ -133,7 +133,7 @@ export class AutomergeRootEditor implements RootEditor {
 				const texts = list.items.map((i) => (i.amount > 1 ? `${i.text} (${i.amount}x)` : i.text));
 
 				root.items[index].title = list.meta.title.toString();
-				root.items[index].description = texts.join(', ').slice(0, 50) || EMPTY_DESCRIPTION;
+				root.items[index].description = texts.join(', ') || EMPTY_DESCRIPTION;
 				root.items[index].public = list.meta.public;
 
 				// eslint-disable-next-line svelte/prefer-svelte-reactivity
