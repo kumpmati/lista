@@ -65,6 +65,7 @@
 	{#snippet buttons()}
 		{#if onDelete}
 			<Button
+				title="Delete group and its items"
 				variant="text"
 				size="s"
 				iconType="full"
