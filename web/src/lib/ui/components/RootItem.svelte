@@ -104,7 +104,7 @@
 
 		padding: 1rem;
 		border-radius: 0.75rem;
-		background-color: var(--m3c-surface-container);
+		background-color: var(--m3c-surface-container-high);
 
 		transition:
 			box-shadow 150ms,
