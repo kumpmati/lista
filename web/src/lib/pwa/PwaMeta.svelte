@@ -6,9 +6,7 @@
 
 	useRegisterSW({
 		immediate: true,
-		onOfflineReady: () => snackbar('App is ready to work offline', undefined, true),
-		onRegisterError: (err) =>
-			snackbar('Service Worker registration failed: ' + err, undefined, true)
+		onOfflineReady: () => snackbar('App is ready to work offline', undefined, true)
 	});
 </script>
 
