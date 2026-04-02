@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	let { children }: { children: Snippet } = $props();
+	let { children, style }: { children: Snippet; style?: string } = $props();
 </script>
 
-<div class="mobile-only">
+<div class="mobile-only" {style}>
 	{@render children()}
 </div>

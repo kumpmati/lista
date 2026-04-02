@@ -78,6 +78,14 @@
 		snackbar(`Cleared ${n} items`, undefined, true);
 	};
 
+	const handleClickShare = async () => {
+		if (!editor.current.meta.public) {
+			shareMenuOpen = true;
+		} else {
+			await handleShare();
+		}
+	};
+
 	const handleShare = async () => {
 		const url = `${PUBLIC_ORIGIN}/list/${params.listId}`;
 
@@ -130,7 +138,9 @@
 			{/snippet}
 
 			<Menu>
-				<MenuItem onclick={() => (shareMenuOpen = true)}>Share list</MenuItem>
+				<MenuItem onclick={handleClickShare}>
+					{editor.current.meta.public ? 'Copy share link' : 'Share list'}
+				</MenuItem>
 				<MenuItem onclick={handleCheckAll}>Check all</MenuItem>
 				<MenuItem onclick={handleUncheckAll}>Uncheck all</MenuItem>
 				<MenuItem onclick={handleDeleteCompleted}>Clear completed</MenuItem>

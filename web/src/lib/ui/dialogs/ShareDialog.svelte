@@ -35,7 +35,7 @@
 
 		<Button variant="filled" onclick={handleConfirm} iconType="left" disabled={loading}>
 			<Share2 />
-			{loading ? 'Sharing...' : 'Share'}
+			Share
 		</Button>
 	{/snippet}
 </Dialog>

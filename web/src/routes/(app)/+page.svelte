@@ -30,6 +30,10 @@
 		snackbar('Created new list', undefined, true);
 	});
 
+	const handleImportList = wrap(async (listId: string) => {
+		await goto(resolve('/(app)/list/[listId]', { listId }));
+	});
+
 	const handleDeleteSelected = async () => {
 		const num = selected.size;
 		await Promise.allSettled(selected.values().map((id) => data.root.removeList(id)));
@@ -123,7 +127,11 @@
 		{:else}
 			<h1>My lists</h1>
 
-			<NewListButton onclick={handleCreateList.run} disabled={handleCreateList.pending.size > 0} />
+			<NewListButton
+				onclick={handleCreateList.run}
+				onImport={(id) => handleImportList.run(id)}
+				disabled={handleCreateList.pending.size > 0 || handleImportList.pending.size > 0}
+			/>
 		{/if}
 	</Header>
 
