@@ -13,16 +13,15 @@
 		display: flex;
 		flex-direction: column;
 		margin: 0 auto;
-		max-width: 40rem;
 	}
 
-	@media screen and (min-width: 40rem) {
+	@media screen and (width >= 40rem) {
 		main {
+			max-width: 36rem;
 			width: calc(100% - 2rem);
 			background-color: var(--m3c-surface);
 			border-radius: 1rem;
 			margin-top: 2rem;
-			padding: 1rem;
 		}
 	}
 </style>
