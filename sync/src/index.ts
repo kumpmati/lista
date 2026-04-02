@@ -54,7 +54,7 @@ export class AutomergeSyncDurableObject extends DurableObject<Env> {
 
 		// Automerge setup
 		this.adapter = new CustomWebSocketAdapter(this.sessions);
-		this.repo = createRepo(this.adapter);
+		this.repo = createRepo(this.adapter, this.ctx.storage);
 	}
 
 	async fetch(request: Request) {
