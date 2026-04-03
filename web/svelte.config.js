@@ -17,7 +17,7 @@ const config = {
 		adapter: adapter(),
 
 		version: {
-			name: 'v0.1.1',
+			name: 'v0.1.2',
 			pollInterval: 5 * 60 * 1000 // 5 minutes
 		},
 
