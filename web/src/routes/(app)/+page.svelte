@@ -1,9 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import Logo from '$lib/ui/components/Logo.svelte';
 	import NewListButton from '$lib/ui/components/NewListButton.svelte';
 	import RootItem from '$lib/ui/components/RootItem.svelte';
 	import DeleteDialog from '$lib/ui/dialogs/DeleteDialog.svelte';
+	import Footer from '$lib/ui/layout/Footer.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { sortByLastUpdated, sortByPinned } from '$lib/utils/sort.js';
@@ -125,7 +127,9 @@
 				</SplitButton>
 			</div>
 		{:else}
-			<h1>My lists</h1>
+			<h1>
+				<Logo /> My lists
+			</h1>
 
 			<NewListButton
 				onclick={handleCreateList.run}
@@ -157,8 +161,13 @@
 	</ul>
 </Main>
 
+<Footer />
+
 <style>
 	h1 {
+		display: flex;
+		align-items: center;
+		gap: 0.3em;
 		font-size: 20px;
 		font-weight: bold;
 		color: var(--m3c-primary);
@@ -170,7 +179,7 @@
 		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
 		gap: 0.5rem;
 		padding: 1rem;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
 	}
 
 	li {

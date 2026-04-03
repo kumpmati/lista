@@ -7,6 +7,7 @@
 	import NewGroupButton from '$lib/ui/components/NewGroupButton.svelte';
 	import NewGroupDialog from '$lib/ui/dialogs/NewGroupDialog.svelte';
 	import ShareDialog from '$lib/ui/dialogs/ShareDialog.svelte';
+	import Footer from '$lib/ui/layout/Footer.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { ArrowLeft, EllipsisVertical } from '@lucide/svelte';
@@ -138,6 +139,8 @@
 
 	<ListEditor {editor} />
 </Main>
+
+<Footer />
 
 <style>
 	.buttons {
