@@ -21,7 +21,6 @@
 	}
 
 	.content {
-		overflow: clip; /* preserves position: sticky */
 		background-color: var(--background);
 	}
 
