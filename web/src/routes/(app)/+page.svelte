@@ -95,6 +95,12 @@
 	Permanently delete {selected.size} lists? This cannot be undone.
 </DeleteDialog>
 
+<NewListButton
+	onclick={handleCreateList.run}
+	onImport={(id) => handleImportList.run(id)}
+	disabled={handleCreateList.pending.size > 0 || handleImportList.pending.size > 0}
+/>
+
 <Main>
 	<Header sticky>
 		{#if isSelecting}
@@ -131,12 +137,6 @@
 			<h1>
 				<Logo /> My lists
 			</h1>
-
-			<NewListButton
-				onclick={handleCreateList.run}
-				onImport={(id) => handleImportList.run(id)}
-				disabled={handleCreateList.pending.size > 0 || handleImportList.pending.size > 0}
-			/>
 		{/if}
 	</Header>
 

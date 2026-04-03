@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { Import, Plus } from '@lucide/svelte';
 	import { Button, Dialog, snackbar, TextFieldOutlined } from 'm3-svelte';
-	import DesktopOnly from '../layout/DesktopOnly.svelte';
-	import MobileOnly from '../layout/MobileOnly.svelte';
 	import { match } from '$app/paths';
 	import { PUBLIC_ORIGIN } from '$env/static/public';
+	import { getIsMobileContext } from '$lib/context';
+	import FloatingControls from '../layout/FloatingControls.svelte';
 
 	type Props = {
 		onclick: () => unknown;
@@ -18,12 +18,14 @@
 	let importMenuOpen = $state(false);
 	let importText = $state('');
 
+	const mobile = getIsMobileContext();
+
 	const handleCancelImport = () => {
 		importText = '';
 		importMenuOpen = false;
 	};
 
-	const handleImportSubmit = async (e: Event) => {
+	const handleSubmitImport = async (e: Event) => {
 		if (!importText) return;
 		e.preventDefault();
 
@@ -49,7 +51,7 @@
 	<form
 		id="list-import-form"
 		method="dialog"
-		onsubmit={handleImportSubmit}
+		onsubmit={handleSubmitImport}
 		onreset={handleCancelImport}
 	>
 		<p>
@@ -77,43 +79,32 @@
 	{/snippet}
 </Dialog>
 
-<DesktopOnly>
-	<div style="display: flex; align-items: center; gap: 0.5rem; margin-left: auto;">
-		<Button
-			iconType="full"
-			variant="elevated"
-			size="s"
-			onclick={() => (importMenuOpen = true)}
-			{disabled}
-		>
-			<Import stroke-linecap="butt" />
-		</Button>
-
-		<Button title="Create list" variant="filled" iconType="full" {onclick} {disabled}>
-			<Plus stroke-linecap="square" />
-		</Button>
-	</div>
-</DesktopOnly>
-
-<MobileOnly>
-	<div
-		style="position: fixed; bottom: 1rem; right: 1rem; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;"
+<FloatingControls>
+	<Button
+		iconType={mobile.current ? 'full' : 'left'}
+		variant="elevated"
+		size="s"
+		onclick={() => (importMenuOpen = true)}
+		{disabled}
+		title="Import list"
+		square={!mobile.current}
 	>
-		<Button
-			iconType="full"
-			variant="elevated"
-			size="s"
-			onclick={() => (importMenuOpen = true)}
-			{disabled}
-		>
-			<Import />
-		</Button>
+		<Import />
+		{#if !mobile.current}Import{/if}
+	</Button>
 
-		<Button size="m" iconType="full" {onclick} {disabled}>
-			<Plus stroke-linecap="square" />
-		</Button>
-	</div>
-</MobileOnly>
+	<Button
+		size="m"
+		iconType={mobile.current ? 'full' : 'left'}
+		{onclick}
+		{disabled}
+		title="Create list"
+		square={!mobile.current}
+	>
+		<Plus stroke-linecap="square" />
+		{#if !mobile.current}Create{/if}
+	</Button>
+</FloatingControls>
 
 <style>
 	#list-import-form {

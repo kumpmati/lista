@@ -1,7 +1,4 @@
 import { createContext } from 'svelte';
-import type { RootEditor } from './interface';
-import { IndexedDBStorageAdapter } from '@automerge/automerge-repo-storage-indexeddb';
+import type { IsMobile } from './utils/mobile.svelte';
 
-export const [getRootEditorContext, setRootEditorContext] = createContext<RootEditor>();
-
-export const [getIdbContext, setIdbContext] = createContext<IndexedDBStorageAdapter>();
+export const [getIsMobileContext, setIsMobileContext] = createContext<IsMobile>();
