@@ -144,7 +144,7 @@
 		{#each sortedItems as item (item.id)}
 			<li animate:flip={{ duration: 150 }}>
 				<RootItem
-					isSelectable={isSelecting}
+					isSelectionMode={isSelecting}
 					isSelected={selected.has(item.id)}
 					id={item.id}
 					title={item.title}

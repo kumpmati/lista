@@ -3,15 +3,15 @@
 	import { resolve } from '$app/paths';
 	import { Pin, Share2 } from '@lucide/svelte';
 	import { Checkbox } from 'm3-svelte';
-	import { usePress } from 'svelte-gestures';
 	import { slide } from 'svelte/transition';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import { useDynamicPress } from '$lib/utils/useDynamicPress';
 
 	dayjs.extend(relativeTime);
 
 	type Props = {
-		isSelectable?: boolean;
+		isSelectionMode?: boolean;
 		isSelected?: boolean;
 		id: string;
 		title: string;
@@ -24,7 +24,7 @@
 	};
 
 	let {
-		isSelectable,
+		isSelectionMode,
 		isSelected,
 		id,
 		title,
@@ -36,27 +36,32 @@
 		onToggleSelect
 	}: Props = $props();
 
-	const press = usePress(
-		() => {
-			if (!isSelectable) onLongPress?.();
-		},
-		() => ({ timeframe: 300, triggerBeforeFinished: true })
-	);
-
-	let selected = $derived(isSelectable && isSelected);
-
 	const handleClick = async () => {
-		if (!isSelectable) {
+		if (!isSelectionMode) {
 			goto(resolve('/(app)/list/[listId]', { listId: id }));
 			return;
 		}
 
 		onToggleSelect?.(!isSelected);
 	};
+
+	const handleLongPress = () => {
+		if (!isSelectionMode) onLongPress?.();
+		else handleClick();
+	};
+
+	const press = useDynamicPress({
+		timeframe: 300,
+		triggerBeforeFinished: true,
+		onpress: handleLongPress,
+		ontap: handleClick
+	});
+
+	let selected = $derived(isSelectionMode && isSelected);
 </script>
 
-<button class="m3-layer" class:selected {...press} onclick={handleClick}>
-	{#if isSelectable}
+<button class="m3-layer" class:selected {...press}>
+	{#if isSelectionMode}
 		<label transition:slide={{ axis: 'y', duration: 150 }}>
 			<Checkbox>
 				<input type="checkbox" checked={selected} tabindex="-1" />
