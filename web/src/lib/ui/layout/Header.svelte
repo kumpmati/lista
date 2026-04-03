@@ -12,5 +12,7 @@
 		display: flex;
 		align-items: center;
 		padding: 1rem;
+
+		view-transition-name: header;
 	}
 </style>

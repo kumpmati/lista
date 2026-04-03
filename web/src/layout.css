@@ -2,6 +2,9 @@
 	--m3-font: 'Atkinson Hyperlegible', system-ui;
 	font-family: var(--m3-font);
 
+	--ease-in-cubic: cubic-bezier(0.32, 0, 0.67, 0);
+	--ease-out-cubic: cubic-bezier(0.33, 1, 0.68, 1);
+
 	--text: light-dark(#000, #fff);
 	--text-subtle: light-dark(#808080, #808080);
 	--background: light-dark(#fff, #000);
@@ -38,4 +41,42 @@ body {
 	.mobile-only {
 		display: none;
 	}
+}
+
+@keyframes fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes scale-in {
+	from {
+		transform: scale(1.05);
+	}
+}
+
+@keyframes scale-out {
+	to {
+		transform: scale(0.5);
+	}
+}
+
+:root::view-transition-old(root) {
+	animation: 30ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+
+	transform-origin: 50% 50%;
+}
+
+:root::view-transition-new(root) {
+	animation:
+		30ms 20ms both fade-in,
+		250ms var(--ease-out-cubic) both scale-in;
+
+	transform-origin: 50% 20%;
 }

@@ -7,10 +7,13 @@
 	import { Snackbar } from 'm3-svelte';
 	import PwaMeta from '$lib/pwa/PwaMeta.svelte';
 	import OfflineNotify from '$lib/pwa/OfflineNotify.svelte';
+	import { useViewTransitions } from '$lib/utils/viewTransitions.js';
 
 	let { children, data } = $props();
 
 	onDestroy(() => data.root.cleanup());
+
+	useViewTransitions();
 </script>
 
 <svelte:head>
