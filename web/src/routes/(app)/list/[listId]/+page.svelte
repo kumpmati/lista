@@ -4,8 +4,6 @@
 	import ListEditor from '$lib/ui/ListEditor.svelte';
 	import ListTitle from '$lib/ui/components/ListTitle.svelte';
 	import MenuContainer from '$lib/ui/components/MenuContainer.svelte';
-	import NewGroupButton from '$lib/ui/components/NewGroupButton.svelte';
-	import NewGroupDialog from '$lib/ui/dialogs/NewGroupDialog.svelte';
 	import ShareDialog from '$lib/ui/dialogs/ShareDialog.svelte';
 	import Footer from '$lib/ui/layout/Footer.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
@@ -16,7 +14,6 @@
 
 	let { params, data } = $props();
 
-	let newGroupMenuOpen = $state(false);
 	let shareMenuOpen = $state(false);
 	let editMenuOpen = $state(false);
 
@@ -99,17 +96,7 @@
 	Do you want to share this list? Anyone with the link will be able to edit it.
 </ShareDialog>
 
-<NewGroupDialog
-	headline="Create group"
-	bind:open={newGroupMenuOpen}
-	onCreate={async (text) => {
-		await editor.addGroup(text);
-	}}
-/>
-
 <Main>
-	<NewGroupButton onclick={() => (newGroupMenuOpen = true)} />
-
 	<Header>
 		<Button iconType="full" href={resolve('/')} variant="text">
 			<ArrowLeft stroke-linecap="square" />

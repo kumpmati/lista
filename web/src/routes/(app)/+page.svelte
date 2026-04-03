@@ -5,6 +5,7 @@
 	import NewListButton from '$lib/ui/components/NewListButton.svelte';
 	import RootItem from '$lib/ui/components/RootItem.svelte';
 	import DeleteDialog from '$lib/ui/dialogs/DeleteDialog.svelte';
+	import EmptyHomePlaceholder from '$lib/ui/placeholders/EmptyHomePlaceholder.svelte';
 	import Footer from '$lib/ui/layout/Footer.svelte';
 	import Header from '$lib/ui/layout/Header.svelte';
 	import Main from '$lib/ui/layout/Main.svelte';
@@ -139,7 +140,7 @@
 		{/if}
 	</Header>
 
-	<ul class="list">
+	<ul class="list" class:empty={!sortedItems.length}>
 		{#each sortedItems as item (item.id)}
 			<li animate:flip={{ duration: 150 }}>
 				<RootItem
@@ -156,7 +157,7 @@
 				/>
 			</li>
 		{:else}
-			<li>No lists yet.</li>
+			<EmptyHomePlaceholder onCreate={handleCreateList.run} />
 		{/each}
 	</ul>
 </Main>
@@ -180,6 +181,10 @@
 		gap: 0.5rem;
 		padding: 1rem;
 		margin-bottom: 2rem;
+
+		&.empty {
+			display: contents;
+		}
 	}
 
 	li {

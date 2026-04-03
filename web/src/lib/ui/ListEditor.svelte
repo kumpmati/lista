@@ -10,13 +10,19 @@
 	import Group from './components/Group.svelte';
 	import { groupBy } from '$lib/utils/groupBy';
 	import type { ListItemV2 } from '$lib/types';
+	import EmptyListPlaceholder from './placeholders/EmptyListPlaceholder.svelte';
+	import NewGroupDialog from './dialogs/NewGroupDialog.svelte';
+	import NewGroupButton from './components/NewGroupButton.svelte';
 
 	let { editor }: { editor: ListEditor } = $props();
 
+	let newGroupMenuOpen = $state(false);
 	let editing = $state<string | null>(null);
 	let newItem = $state<{ amount: number; text: string; groupId: string | null } | null>(null);
 
 	const GROUP_UNASSIGNED = '';
+
+	let isEmpty = $derived(editor.current.groups.length + editor.current.items.length === 0);
 
 	// TODO: sort items after grouping for better efficiency
 	let sortedItems = $derived(editor.current.items.toSorted(sortItemsByStatus));
@@ -80,53 +86,81 @@
 	{/if}
 {/snippet}
 
-<div class="wrapper">
-	<div class="ungrouped">
-		{@render itemList(groupedItems[GROUP_UNASSIGNED] ?? [])}
-		{@render newItemButton(null)}
+<NewGroupDialog
+	headline="Create group"
+	bind:open={newGroupMenuOpen}
+	onCreate={async (text) => {
+		await editor.addGroup(text);
+	}}
+/>
 
-		{#if newItem?.groupId === null}
-			<ListItemRowEdit
-				amount={newItem.amount}
-				text={newItem.text}
-				onSave={async (amount, text) => handleNewItem(amount, text, null)}
-				onCancel={() => (newItem = null)}
-				onDelete={() => (newItem = null)}
-			/>
-		{/if}
-	</div>
+<NewGroupButton onclick={() => (newGroupMenuOpen = true)} />
 
-	{#each editor.current.groups as group (group.id)}
-		{@const items = groupedItems[group.id] ?? []}
-		{@const numCompleted = items.filter((i) => i.done).length}
+{#if !isEmpty}
+	<div class="wrapper">
+		<div class="ungrouped">
+			{@render itemList(groupedItems[GROUP_UNASSIGNED] ?? [])}
+			{@render newItemButton(null)}
 
-		<Group
-			id={group.id}
-			text={group.text.toString()}
-			totalItems={items.length}
-			completedItems={numCompleted}
-			onEdit={async (text) => {
-				await editor.updateGroup(group.id, { text: new ImmutableString(text) });
-			}}
-			onDelete={async () => {
-				await editor.removeGroup(group.id, true); // TODO: allow user to choose if items are deleted?
-			}}
-		>
-			{@render itemList(items)}
-			{@render newItemButton(group.id)}
-
-			{#if newItem?.groupId === group.id}
+			{#if newItem?.groupId === null}
 				<ListItemRowEdit
 					amount={newItem.amount}
 					text={newItem.text}
-					onSave={async (amount, text) => handleNewItem(amount, text, group.id)}
+					onSave={async (amount, text) => handleNewItem(amount, text, null)}
 					onCancel={() => (newItem = null)}
 					onDelete={() => (newItem = null)}
 				/>
 			{/if}
-		</Group>
-	{/each}
-</div>
+		</div>
+
+		{#each editor.current.groups as group (group.id)}
+			{@const items = groupedItems[group.id] ?? []}
+			{@const numCompleted = items.filter((i) => i.done).length}
+
+			<Group
+				id={group.id}
+				text={group.text.toString()}
+				totalItems={items.length}
+				completedItems={numCompleted}
+				onEdit={async (text) => {
+					await editor.updateGroup(group.id, { text: new ImmutableString(text) });
+				}}
+				onDelete={async () => {
+					// TODO: allow user to choose if items are deleted?
+					await editor.removeGroup(group.id, true);
+				}}
+			>
+				{@render itemList(items)}
+				{@render newItemButton(group.id)}
+
+				{#if newItem?.groupId === group.id}
+					<ListItemRowEdit
+						amount={newItem.amount}
+						text={newItem.text}
+						onSave={async (amount, text) => handleNewItem(amount, text, group.id)}
+						onCancel={() => (newItem = null)}
+						onDelete={() => (newItem = null)}
+					/>
+				{/if}
+			</Group>
+		{/each}
+	</div>
+{:else}
+	<EmptyListPlaceholder
+		onCreateItem={async () => {
+			const item = await editor.addItem({
+				amount: 1,
+				text: new ImmutableString(''),
+				groupId: null,
+				done: false
+			});
+			editing = item.id; // TODO: delete newly created empty item if user cancels editing?
+		}}
+		onCreateGroup={() => {
+			newGroupMenuOpen = true;
+		}}
+	/>
+{/if}
 
 <style>
 	.wrapper {
