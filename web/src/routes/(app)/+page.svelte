@@ -173,6 +173,7 @@
 		font-weight: bold;
 		color: var(--m3c-primary);
 		user-select: none;
+		height: 2.5rem;
 	}
 
 	.list {
