@@ -108,6 +108,8 @@
 />
 
 <Main>
+	<NewGroupButton onclick={() => (newGroupMenuOpen = true)} />
+
 	<Header>
 		<Button iconType="full" href={resolve('/')} variant="text">
 			<ArrowLeft stroke-linecap="square" />
@@ -116,8 +118,6 @@
 		<ListTitle title={editor.current.meta.title.toString()} onchange={handleChangeTitle} />
 
 		<div class="buttons">
-			<NewGroupButton onclick={() => (newGroupMenuOpen = true)} />
-
 			<MenuContainer bind:open={editMenuOpen}>
 				{#snippet trigger()}
 					<Button iconType="full" variant="text" onclick={() => (editMenuOpen = !editMenuOpen)}>
