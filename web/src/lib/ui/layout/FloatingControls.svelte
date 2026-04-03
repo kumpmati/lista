@@ -4,14 +4,15 @@
 
 	type Props = {
 		children?: Snippet;
+		viewTransitionName?: string;
 	};
 
-	let { children }: Props = $props();
+	let { children, viewTransitionName = 'unset' }: Props = $props();
 
 	const mobile = getIsMobileContext();
 </script>
 
-<div class:mobile={mobile.current}>
+<div class:mobile={mobile.current} style="view-transition-name: {viewTransitionName};">
 	{@render children?.()}
 </div>
 
@@ -24,6 +25,8 @@
 		display: flex;
 		flex-direction: column;
 		gap: 0.5rem;
+
+		view-transition-name: unset;
 
 		&.mobile {
 			align-items: center;

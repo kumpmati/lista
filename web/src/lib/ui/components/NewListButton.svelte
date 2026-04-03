@@ -79,7 +79,7 @@
 	{/snippet}
 </Dialog>
 
-<FloatingControls>
+<FloatingControls viewTransitionName="controls">
 	<Button
 		iconType={mobile.current ? 'full' : 'left'}
 		variant="elevated"

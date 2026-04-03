@@ -13,7 +13,7 @@
 	const mobile = getIsMobileContext();
 </script>
 
-<FloatingControls>
+<FloatingControls viewTransitionName="controls">
 	<Button
 		{onclick}
 		iconType={mobile.current ? 'full' : 'left'}
