@@ -102,7 +102,7 @@
 			<div style="margin-left: auto;">
 				<SplitButton
 					onclick={handleStopSelect}
-					variant="tonal"
+					variant="elevated"
 					x="right"
 					y="down"
 					title="Stop selecting"
