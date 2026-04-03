@@ -20,6 +20,11 @@
 		min-block-size: 100svh;
 	}
 
+	.content {
+		overflow: clip; /* preserves position: sticky */
+		background-color: var(--background);
+	}
+
 	@media screen and (width >= 40rem) {
 		main {
 			max-width: 36rem;

@@ -97,7 +97,7 @@
 </ShareDialog>
 
 <Main>
-	<Header>
+	<Header sticky>
 		<Button iconType="full" href={resolve('/')} variant="text">
 			<ArrowLeft stroke-linecap="square" />
 		</Button>

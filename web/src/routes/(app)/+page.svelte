@@ -96,7 +96,7 @@
 </DeleteDialog>
 
 <Main>
-	<Header>
+	<Header sticky>
 		{#if isSelecting}
 			<h1>{selected.size} Selected</h1>
 
