@@ -29,8 +29,6 @@
 	const handleCreateList = wrap(async () => {
 		const item = await data.root.addList();
 		await goto(resolve('/(app)/list/[listId]', { listId: item.id }));
-
-		snackbar('Created new list', undefined, true);
 	});
 
 	const handleImportList = wrap(async (listId: string) => {
@@ -74,12 +72,6 @@
 
 	const handleSetPinToSelected = async (pinned: boolean) => {
 		await Promise.allSettled(selected.values().map((id) => data.root.setPinned(id, pinned)));
-
-		if (pinned) {
-			snackbar(`Pinned ${selected.size} lists`);
-		} else {
-			snackbar(`Unpinned ${selected.size} lists`);
-		}
 	};
 </script>
 
