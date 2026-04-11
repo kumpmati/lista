@@ -38,7 +38,7 @@
 
 	const handleClick = async () => {
 		if (!isSelectionMode) {
-			goto(resolve('/(app)/list/[listId]', { listId: id }));
+			goto(resolve(`/(app)/list/[listId]?visibility=${isPublic ? 'public' : ''}`, { listId: id }));
 			return;
 		}
 

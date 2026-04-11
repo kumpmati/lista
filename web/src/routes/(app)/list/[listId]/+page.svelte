@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { PUBLIC_ORIGIN } from '$env/static/public';
 	import ListEditor from '$lib/ui/ListEditor.svelte';
@@ -77,6 +78,14 @@
 		try {
 			await editor.makePublic();
 			await navigator.clipboard.writeText(url);
+
+			// update URL so that network adapter is added in +page.ts
+			await goto(resolve('/(app)/list/[listId]?visibility=public', { listId: params.listId }), {
+				replaceState: true,
+				noScroll: true,
+				keepFocus: true
+			});
+
 			snackbar('Link copied to clipboard', undefined, true);
 		} catch {
 			snackbar('Failed to copy share link', undefined, true);

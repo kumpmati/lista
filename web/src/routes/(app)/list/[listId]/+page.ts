@@ -7,16 +7,19 @@ import { WebSocketClientAdapter } from '@automerge/automerge-repo-network-websoc
 import { document } from '@automerge/automerge-repo-svelte-store';
 import { error } from '@sveltejs/kit';
 
-export const load = async ({ params, parent }) => {
+export const load = async ({ params, parent, url }) => {
 	const { idb, root } = await parent();
 
 	// the custom sync server groups durable objects by document id, improving sync performance
 	// since each document gets its own durable object.
 	const syncServerUrl = `${PUBLIC_SYNC_SERVER_URL}/?doc=${params.listId}`;
 
+	// RootItem should populate this based on current document meta.
+	const isPublic = url.searchParams.get('visibility') === 'public';
+
 	const repo = new Repo({
 		storage: idb, // use same IDB instance as root document
-		network: [new WebSocketClientAdapter(syncServerUrl)],
+		network: isPublic ? [new WebSocketClientAdapter(syncServerUrl)] : undefined,
 
 		// don't broadcast new documents with other peers.
 		shareConfig: {
