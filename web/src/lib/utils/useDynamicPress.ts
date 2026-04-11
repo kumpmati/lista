@@ -1,5 +1,6 @@
 import {
 	pressComposition,
+	scrollComposition,
 	tapComposition,
 	useComposedGesture,
 	type GestureCallback
@@ -35,6 +36,10 @@ type DynamicPressOptions = {
 export const useDynamicPress = (opts?: DynamicPressOptions) => {
 	// combine tap and press into one gesture
 	const gesture: GestureCallback = (register) => {
+		const scrollFuncs = register(scrollComposition, {
+			composed: true
+		});
+
 		const tapFuncs = register(tapComposition, {
 			composed: true,
 			timeframe: opts?.timeframe ?? 300
@@ -47,6 +52,7 @@ export const useDynamicPress = (opts?: DynamicPressOptions) => {
 		});
 
 		return (activeEvents, event) => {
+			scrollFuncs.onMove?.(activeEvents, event);
 			tapFuncs.onMove?.(activeEvents, event);
 			pressFuncs.onMove?.(activeEvents, event);
 		};
