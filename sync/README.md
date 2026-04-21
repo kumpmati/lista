@@ -1,6 +1,6 @@
 # Sync server
 
-This is essentially a copy of the [automerge-repo-sync-server](https://github.com/automerge/automerge-repo-sync-server) repo converted to work inside Cloudflare Durable Objects without any storage and using hibernatable WebSockets.
+This is essentially a copy of the [automerge-repo-sync-server](https://github.com/automerge/automerge-repo-sync-server) repo converted to work inside Cloudflare Durable Objects with Durable Object SQL storage and using hibernatable WebSockets.
 
 Durable Objects are grouped by the value of the `?doc=` URL parameter in the incoming WebSocket upgrade request.
 This should improve performance, since when used correctly every document gets its own Durable Object.
