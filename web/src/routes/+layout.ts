@@ -1,5 +1,6 @@
 import { AutomergeRootEditor } from '$lib/editor/root/automerge.svelte';
 import type { RootEditor } from '$lib/interface';
+import { HTTPKauppaAPI } from '$lib/kauppa-api/http';
 import { Repo } from '@automerge/automerge-repo';
 import { IndexedDBStorageAdapter } from '@automerge/automerge-repo-storage-indexeddb';
 
@@ -17,5 +18,9 @@ export const load = async () => {
 	const root: RootEditor = new AutomergeRootEditor(rootRepo);
 	await root.onReady();
 
-	return { idb, root };
+	const storeApi = root.current.settings.kauppaApiKey
+		? new HTTPKauppaAPI(root.current.settings.kauppaApiKey)
+		: null;
+
+	return { idb, root, storeApi };
 };

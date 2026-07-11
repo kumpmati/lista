@@ -1,5 +1,5 @@
 import { PUBLIC_KAUPPA_API_URL } from '$env/static/public';
-import type { z, ZodType } from 'zod';
+import { z, type ZodType } from 'zod';
 import type { KauppaAPI } from '.';
 import {
 	type KauppaSearchResponse,
@@ -7,7 +7,8 @@ import {
 	kauppaSearchResponseSchema,
 	type KauppaSourceResponse,
 	kauppaSourceResponseSchema,
-	kauppaFullProductSchema
+	kauppaFullProductSchema,
+	kauppaHealthResponseSchema
 } from './types';
 
 export class HTTPKauppaAPI implements KauppaAPI {
@@ -19,8 +20,12 @@ export class HTTPKauppaAPI implements KauppaAPI {
 
 	private async req<T extends ZodType>(url: string, schema: T): Promise<z.infer<T>> {
 		const response = await fetch(url, {
-			headers: { Authentication: `Bearer ${this.apiKey}` }
+			headers: { Authorization: `Bearer ${this.apiKey}` }
 		});
+
+		if (!response.ok) {
+			throw new Error(await response.text());
+		}
 
 		const parsed = schema.safeParse(await response.json());
 		if (!parsed.success) {
@@ -28,6 +33,10 @@ export class HTTPKauppaAPI implements KauppaAPI {
 		}
 
 		return parsed.data;
+	}
+
+	async health(): Promise<boolean> {
+		return (await this.req(`${PUBLIC_KAUPPA_API_URL}/api/health`, kauppaHealthResponseSchema)).ok;
 	}
 
 	async getSources(): Promise<KauppaSourceResponse> {

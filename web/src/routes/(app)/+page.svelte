@@ -11,8 +11,8 @@
 	import Main from '$lib/ui/layout/Main.svelte';
 	import { sortByLastUpdated, sortByPinned } from '$lib/utils/sort.js';
 	import { wrap } from '$lib/utils/wrap.svelte.js';
-	import { X } from '@lucide/svelte';
-	import { Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
+	import { Settings, X } from '@lucide/svelte';
+	import { Button, Menu, MenuItem, snackbar, SplitButton } from 'm3-svelte';
 	import { flip } from 'svelte/animate';
 	import { SvelteSet } from 'svelte/reactivity';
 
@@ -129,6 +129,12 @@
 			<h1>
 				<Logo /> My lists
 			</h1>
+
+			<div class="buttons">
+				<Button iconType="full" href={resolve('/settings')} variant="text">
+					<Settings stroke-linecap="square" />
+				</Button>
+			</div>
 		{/if}
 	</Header>
 
@@ -182,5 +188,12 @@
 
 	li {
 		display: block;
+	}
+
+	.buttons {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		margin-left: auto;
 	}
 </style>

@@ -43,6 +43,7 @@ export const kauppaSourceSchema = z.object({
 	name: z.string()
 });
 
+export const kauppaHealthResponseSchema = z.object({ ok: z.boolean() });
 export const kauppaSourceResponseSchema = z.array(kauppaSourceSchema);
 
 export type KauppaFullProduct = z.infer<typeof kauppaFullProductSchema>;

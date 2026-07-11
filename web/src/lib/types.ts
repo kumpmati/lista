@@ -1,5 +1,9 @@
 import type { ImmutableString } from '@automerge/automerge-repo';
 
+export type Settings = {
+	kauppaApiKey?: string;
+};
+
 export type RootItem = {
 	id: string;
 	title: string;

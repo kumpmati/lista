@@ -1,13 +1,15 @@
-import type { RootItem, ListItemV2, ListV2, ListGroupV2 } from './types';
+import type { RootItem, ListItemV2, ListV2, ListGroupV2, Settings } from './types';
 
 export interface RootEditor {
-	readonly current: Readonly<{ items: RootItem[] }>;
+	readonly current: Readonly<{ items: RootItem[]; settings: Settings }>;
 
 	onReady(): Promise<void>;
 	addList(title?: string): Promise<RootItem>;
 	syncMeta(id: string, list: ListV2): Promise<void>;
 	removeList(id: string): Promise<void>;
 	setPinned(id: string, pinned: boolean): Promise<void>;
+
+	updateSettings(d: Partial<Settings>): Promise<void>;
 
 	cleanup(): void;
 }

@@ -1,5 +1,5 @@
 import type { RootEditor } from '$lib/interface';
-import type { RootItem, ListV2 } from '$lib/types';
+import type { RootItem, ListV2, Settings } from '$lib/types';
 import { sleep } from '$lib/utils/sleep';
 import {
 	ImmutableString,
@@ -16,6 +16,7 @@ const EMPTY_DESCRIPTION = '-';
 
 type RootState = {
 	items: RootItem[];
+	settings: Settings;
 };
 
 export class AutomergeRootEditor implements RootEditor {
@@ -24,7 +25,7 @@ export class AutomergeRootEditor implements RootEditor {
 	#unsubscribers: (() => void)[] = [];
 	#initPromise: Promise<void> | null = null;
 
-	current = $state<Readonly<RootState>>({ items: [] });
+	current = $state<Readonly<RootState>>({ items: [], settings: {} });
 
 	constructor(repo: Repo) {
 		this.#repo = repo;
@@ -37,7 +38,7 @@ export class AutomergeRootEditor implements RootEditor {
 			return await document<RootState>(rootDocUrl as AutomergeUrl, this.#repo);
 		}
 
-		const doc = this.#repo.create<RootState>({ items: [] });
+		const doc = this.#repo.create<RootState>({ items: [], settings: {} });
 		localStorage.setItem(ROOT_DOCUMENT_ID_KEY, doc.url.toString());
 
 		return await document<RootState>(doc.url, this.#repo);
@@ -63,6 +64,11 @@ export class AutomergeRootEditor implements RootEditor {
 
 	private subscribe() {
 		if (!this.#handle) throw new Error('not initialized');
+
+		// 'migrate' settings for existing clients
+		this.#handle.change((root) => {
+			if (!root.settings) root.settings = {};
+		});
 
 		const initial = get(this.#handle)!;
 		this.current = initial;
@@ -167,6 +173,14 @@ export class AutomergeRootEditor implements RootEditor {
 		this.#handle.change((root) => {
 			const index = root.items.findIndex((item) => item.id === id);
 			if (index !== -1) root.items[index].pinned = pinned;
+		});
+	}
+
+	async updateSettings(d: Partial<Settings>): Promise<void> {
+		if (!this.#handle) throw new Error('not initialized');
+
+		this.#handle.change((root) => {
+			Object.assign(root.settings, d);
 		});
 	}
 
