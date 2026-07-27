@@ -12,10 +12,6 @@ export default defineConfig({
 	plugins: [
 		sveltekit(),
 		SvelteKitPWA({
-			workbox: {
-				// include js and html in cache so app can start up when offline
-				globPatterns: ['**/*.{js,css,html,svg,png,woff2}']
-			},
 			registerType: 'autoUpdate',
 			devOptions: {
 				enabled: true,
